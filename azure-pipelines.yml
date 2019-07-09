@@ -2,6 +2,8 @@ variables:
   fatsDir: '$(system.defaultWorkingDirectory)/../fats'
   fatsRepo: projectriff/fats
   fatsRefspec: ef4811e8d258463151b3d060b14905720cbbd023 # master as of 2019-07-02
+  tillerNamespace: kube-system
+  tillerServiceAccount: tiller
 
 jobs:
 
@@ -23,3 +25,88 @@ jobs:
       make publish-snapshot
     displayName: 'Stage projectriff chart artifacts'
   displayName: 'Stage chart'
+
+- job: test
+  dependsOn: stage
+  strategy:
+    matrix:
+      minikube:
+        imageName: ubuntu-16.04
+        qualifier: minikube
+        cluster: minikube
+        registry: dockerhub
+      gke:
+        imageName: ubuntu-16.04
+        qualifier: gke
+        cluster: gke
+        registry: gcr
+  pool:
+    vmImage: $(imageName)
+  variables:
+    CLUSTER:  '$(cluster)'
+    REGISTRY: '$(registry)'
+    CLUSTER_NAME: 'charts-$(Build.BuildId)-$(qualifier)'
+    NAMESPACE: '$(CLUSTER_NAME)'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  steps:
+  - bash: ./ci/fats-fetch.sh $(fatsDir) $(fatsRefspec) $(fatsRepo)
+    displayName: 'Fetch FATS'
+  - bash: |
+      $(fatsDir)/install.sh kubectl
+      $(fatsDir)/install.sh riff
+      $(fatsDir)/install.sh helm
+      $(fatsDir)/install.sh gcloud
+      sudo apt-get install socat
+    displayName: 'Install tools'
+    env:
+      GCLOUD_CLIENT_SECRET: '$(GcloudClientSecret)'
+  - bash: $(fatsDir)/start.sh
+    displayName: 'Start FATS'
+    env:
+      DOCKER_USERNAME: '$(DockerUsername)'
+      DOCKER_PASSWORD: '$(DockerPassword)'
+      GCLOUD_CLIENT_SECRET: '$(GcloudClientSecret)'
+  - bash: |
+      set -o errexit
+      set -o nounset
+      set -o pipefail
+
+      source $(fatsDir)/.configure.sh
+
+      kubectl create serviceaccount $(tillerServiceAccount) -n $(tillerNamespace)
+      kubectl create clusterrolebinding "$(tillerServiceAccount)-cluster-admin" --clusterrole cluster-admin --serviceaccount "$(tillerNamespace):$(tillerServiceAccount)"
+      helm init --wait --service-account $(tillerServiceAccount)
+      helm repo add projectriff-snapshots https://projectriff.storage.googleapis.com/charts/snapshots
+      helm repo update
+
+      helm_opts="--set istio.enabled=true"
+      if [[ $DUFFLE_RIFF_INSTALL_FLAGS == *"node_port=true"* ]]; then
+        helm_opts="${helm_opts} --set global.k8s.service.type=NodePort"
+      fi
+      helm install projectriff-snapshots/projectriff-riff --name riff --devel ${helm_opts}
+    env:
+      DOCKER_USERNAME: '$(DockerUsername)'
+      DOCKER_PASSWORD: '$(DockerPassword)'
+      GCLOUD_CLIENT_SECRET: '$(GcloudClientSecret)'
+    displayName: 'Install riff'
+  - bash: ./ci/run-tests.sh
+    displayName: 'Run FATS'
+    env:
+      DOCKER_USERNAME: '$(DockerUsername)'
+      DOCKER_PASSWORD: '$(DockerPassword)'
+      GCLOUD_CLIENT_SECRET: '$(GcloudClientSecret)'
+      FATS_DIR: $(fatsDir)
+      FATS_REFSPEC: $(fatsRefspec)
+  - bash: ci/diagnostics.sh
+    condition: failed()
+    displayName: 'Collect diagnostics'
+  - bash: helm delete riff
+    condition: always()
+    displayName: 'Uninstall riff'
+  - bash: $(fatsDir)/cleanup.sh
+    env:
+      DOCKER_USERNAME: '$(DockerUsername)'
+      DOCKER_PASSWORD: '$(DockerPassword)'
+    condition: always()
+    displayName: 'Cleanup FATS'
+  displayName: 'Test'
