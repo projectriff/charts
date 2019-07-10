@@ -20,6 +20,8 @@ jobs:
   - bash: ./ci/fats-fetch.sh $(fatsDir) $(fatsRefspec) $(fatsRepo)
     displayName: 'Fetch FATS'
   - bash: |
+      $(fatsDir)/install.sh kubectl
+      $(fatsDir)/install.sh riff
       $(fatsDir)/install.sh helm
       $(fatsDir)/install.sh ytt 0.14.0
     displayName: 'Install tools'
