@@ -4,7 +4,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-fats_repo="projectriff/fats"
 source $FATS_DIR/.configure.sh
 source $FATS_DIR/functions/helpers.sh
 
@@ -19,7 +18,7 @@ for test in java java-boot node npm command; do
   path="$FATS_DIR/functions/uppercase/${test}"
   function_name=fats-cluster-uppercase-${test}
   image=$(fats_image_repo ${function_name})
-  create_args="--git-repo https://github.com/${fats_repo}.git --git-revision ${FATS_REFSPEC} --sub-path functions/uppercase/${test}"
+  create_args="--git-repo https://github.com/${FATS_REPO}.git --git-revision ${FATS_REFSPEC} --sub-path functions/uppercase/${test}"
   input_data=charts
   expected_data=CHARTS
 

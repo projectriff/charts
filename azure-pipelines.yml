@@ -65,24 +65,12 @@ jobs:
       DOCKER_USERNAME: '$(DockerUsername)'
       DOCKER_PASSWORD: '$(DockerPassword)'
       GCLOUD_CLIENT_SECRET: '$(GcloudClientSecret)'
-  - bash: |
-      set -o errexit
-      set -o nounset
-      set -o pipefail
-
-      source $(fatsDir)/.configure.sh
-
-      kubectl create serviceaccount $(tillerServiceAccount) -n $(tillerNamespace)
-      kubectl create clusterrolebinding "$(tillerServiceAccount)-cluster-admin" --clusterrole cluster-admin --serviceaccount "$(tillerNamespace):$(tillerServiceAccount)"
-      helm init --wait --service-account $(tillerServiceAccount)
-      helm repo add projectriff-snapshots https://projectriff.storage.googleapis.com/charts/snapshots
-      helm repo update
-
-      helm install projectriff-snapshots/projectriff-riff --name riff --devel --set istio.enabled=true --set global.k8s.service.type=${K8S_SERVICE_TYPE}
+  - bash: ./ci/install-riff.sh
     env:
       DOCKER_USERNAME: '$(DockerUsername)'
       DOCKER_PASSWORD: '$(DockerPassword)'
       GCLOUD_CLIENT_SECRET: '$(GcloudClientSecret)'
+      FATS_DIR: $(fatsDir)
     displayName: 'Install riff'
   - bash: ./ci/run-tests.sh
     displayName: 'Run FATS'
@@ -91,6 +79,7 @@ jobs:
       DOCKER_PASSWORD: '$(DockerPassword)'
       GCLOUD_CLIENT_SECRET: '$(GcloudClientSecret)'
       FATS_DIR: $(fatsDir)
+      FATS_REPO: $(fatsRepo)
       FATS_REFSPEC: $(fatsRefspec)
   - bash: ci/diagnostics.sh
     condition: failed()
@@ -105,3 +94,20 @@ jobs:
     condition: always()
     displayName: 'Cleanup FATS'
   displayName: 'Test'
+
+- job: publish
+  dependsOn: test
+  pool:
+    vmImage: ubuntu-16.04
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  steps:
+  - bash: |
+      $(fatsDir)/install.sh helm
+      $(fatsDir)/install.sh gcloud
+    displayName: 'Install tools'
+    env:
+      GCLOUD_CLIENT_SECRET: '$(GcloudClientSecret)'
+  - bash: ./ci/publish.sh
+    displayName: 'Publish Chart'
+  displayName: 'Publish'
+  
