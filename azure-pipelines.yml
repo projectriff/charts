@@ -141,7 +141,18 @@ jobs:
   dependsOn: test
   pool:
     vmImage: ubuntu-16.04
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: |
+    and(
+      succeeded(),
+      ne(variables['Build.Reason'], 'PullRequest'),
+      or(
+        eq(variables['Build.SourceBranch'], 'refs/heads/master'),
+        and(
+          startsWith(variables['Build.SourceBranch'], 'refs/heads/v'),
+          endsWith(variables['Build.SourceBranch'], 'x')
+        )
+      )
+    )
   steps:
   - bash: |
       $(fatsDir)/install.sh helm

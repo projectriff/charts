@@ -10,8 +10,8 @@ commit=$(git rev-parse HEAD)
 source $FATS_DIR/.configure.sh
 
 chart=${1:-https://storage.googleapis.com/projectriff/charts/snapshots/projectriff-riff-${version}-${commit}.tgz}
-tiller_service_account=${1:-tiller}
-tiller_namespace=${2:-kube-system}
+tiller_service_account=${2:-tiller}
+tiller_namespace=${3:-kube-system}
 
 kubectl create serviceaccount ${tiller_service_account} -n ${tiller_namespace}
 kubectl create clusterrolebinding "${tiller_service_account}-cluster-admin" --clusterrole cluster-admin --serviceaccount "${tiller_namespace}:${tiller_service_account}"
