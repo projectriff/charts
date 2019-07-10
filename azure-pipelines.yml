@@ -154,6 +154,8 @@ jobs:
       )
     )
   steps:
+  - bash: ./ci/fats-fetch.sh $(fatsDir) $(fatsRefspec) $(fatsRepo)
+    displayName: 'Fetch FATS'
   - bash: |
       $(fatsDir)/install.sh helm
       $(fatsDir)/install.sh gcloud
