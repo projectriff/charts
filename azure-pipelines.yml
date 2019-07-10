@@ -7,9 +7,53 @@ variables:
 
 jobs:
 
+- job: test_pr
+  pool:
+    vmImage: 'ubuntu-16.04'
+  variables:
+    CLUSTER:  'minikube'
+    REGISTRY: 'minikube'
+    CLUSTER_NAME: 'charts-$(Build.BuildId)-minikube'
+    NAMESPACE: '$(CLUSTER_NAME)'
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+  steps:
+  - bash: ./ci/fats-fetch.sh $(fatsDir) $(fatsRefspec) $(fatsRepo)
+    displayName: 'Fetch FATS'
+  - bash: |
+      $(fatsDir)/install.sh helm
+      $(fatsDir)/install.sh ytt 0.14.0
+    displayName: 'Install tools'
+  - bash: |
+      helm init --client-only
+      make clean package
+    displayName: 'Package charts'
+  - bash: $(fatsDir)/start.sh
+    displayName: 'Start FATS'
+  - bash: ./ci/install-riff.sh local/projectriff-riff
+    env:
+      FATS_DIR: $(fatsDir)
+    displayName: 'Install riff'
+  - bash: ./ci/run-tests.sh
+    displayName: 'Run tests'
+    env:
+      FATS_DIR: $(fatsDir)
+      FATS_REPO: $(fatsRepo)
+      FATS_REFSPEC: $(fatsRefspec)
+  - bash: ci/diagnostics.sh
+    condition: failed()
+    displayName: 'Collect diagnostics'
+  - bash: helm delete riff
+    condition: always()
+    displayName: 'Uninstall riff'
+  - bash: $(fatsDir)/cleanup.sh
+    condition: always()
+    displayName: 'Cleanup FATS'
+  displayName: 'Test PR'
+
 - job: stage
   pool:
     vmImage: 'ubuntu-16.04'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   steps:
   - bash: ./ci/fats-fetch.sh $(fatsDir) $(fatsRefspec) $(fatsRepo)
     displayName: 'Fetch FATS'
@@ -20,9 +64,7 @@ jobs:
     env:
       GCLOUD_CLIENT_SECRET: '$(GcloudClientSecret)'
     displayName: 'Install tools'
-  - bash: |
-      helm init --client-only
-      make publish-snapshot
+  - bash: ./ci/stage.sh
     displayName: 'Stage projectriff chart artifacts'
   displayName: 'Stage chart'
 
@@ -73,7 +115,7 @@ jobs:
       FATS_DIR: $(fatsDir)
     displayName: 'Install riff'
   - bash: ./ci/run-tests.sh
-    displayName: 'Run FATS'
+    displayName: 'Run tests'
     env:
       DOCKER_USERNAME: '$(DockerUsername)'
       DOCKER_PASSWORD: '$(DockerPassword)'

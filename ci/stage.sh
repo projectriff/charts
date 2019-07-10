@@ -7,6 +7,7 @@ set -o pipefail
 version=`cat VERSION`
 commit=$(git rev-parse HEAD)
 
+helm init --client-only
 make clean package
 
 for f in repository/*.tgz; do mv $f $(echo $f | sed s/${version}/${version}-${commit}/); done
