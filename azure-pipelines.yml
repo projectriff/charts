@@ -44,7 +44,7 @@ jobs:
   - bash: ci/diagnostics.sh
     condition: failed()
     displayName: 'Collect diagnostics'
-  - bash: helm delete riff
+  - bash: ./ci/cleanup-riff.sh
     condition: always()
     displayName: 'Uninstall riff'
   - bash: $(fatsDir)/cleanup.sh
@@ -128,7 +128,7 @@ jobs:
   - bash: ci/diagnostics.sh
     condition: failed()
     displayName: 'Collect diagnostics'
-  - bash: helm delete riff
+  - bash: ./ci/cleanup-riff.sh
     condition: always()
     displayName: 'Uninstall riff'
   - bash: $(fatsDir)/cleanup.sh

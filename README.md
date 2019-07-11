@@ -41,6 +41,13 @@ Helm charts to install Istio and riff.
 
 1. Enjoy.
 
+### Uninstall
+
+```
+helm delete --purge riff
+kubectl delete customresourcedefinitions.apiextensions.k8s.io -l app.kubernetes.io/managed-by=Tiller,app.kubernetes.io/instance=riff
+```
+
 ## Creating charts
 
 ### Prerequisites
