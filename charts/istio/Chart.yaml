@@ -1,10 +1,6 @@
 apiVersion: v1
-name: projectriff-riff
-description: riff is for functions
-keywords:
-  - projectriff
-  - riff
-  - faas
+name: istio
+description: istio for projectriff
 home: https://projectriff.io
 sources:
   - https://github.com/projectriff

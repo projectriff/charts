@@ -9,7 +9,7 @@ commit=$(git rev-parse HEAD)
 
 source $FATS_DIR/.configure.sh
 
-chart=${1:-https://storage.googleapis.com/projectriff/charts/snapshots/projectriff-riff-${version}-${commit}.tgz}
+chart=${1:-https://storage.googleapis.com/projectriff/charts/snapshots/riff-${version}-${commit}.tgz}
 tiller_service_account=${2:-tiller}
 tiller_namespace=${3:-kube-system}
 

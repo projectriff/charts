@@ -36,7 +36,7 @@ Helm charts to install Istio and riff.
    - `--devel` for the latest snapshot.
 
    ```sh
-   helm install projectriff/projectriff-riff --name riff
+   helm install projectriff/riff --name riff
    ```
 
 1. Enjoy.

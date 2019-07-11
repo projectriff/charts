@@ -5,8 +5,8 @@ package: repository
 
 repository: charts package.sh
 	mkdir -p repository
-	./package.sh projectriff-istio ${VERSION} repository
-	./package.sh projectriff-riff ${VERSION} repository
+	./package.sh istio ${VERSION} repository
+	./package.sh riff ${VERSION} repository
 
 .PHONY: clean
 clean:
