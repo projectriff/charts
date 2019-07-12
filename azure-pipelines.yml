@@ -24,7 +24,7 @@ jobs:
       $(fatsDir)/install.sh riff
       $(fatsDir)/install.sh helm
       $(fatsDir)/install.sh ytt 0.14.0
-      snap install yq
+      sudo snap install yq
     displayName: 'Install tools'
   - bash: |
       helm init --client-only
@@ -64,7 +64,7 @@ jobs:
       $(fatsDir)/install.sh helm
       $(fatsDir)/install.sh gcloud
       $(fatsDir)/install.sh ytt 0.14.0
-      snap install yq
+      sudo snap install yq
     env:
       GCLOUD_CLIENT_SECRET: '$(GcloudClientSecret)'
     displayName: 'Install tools'
