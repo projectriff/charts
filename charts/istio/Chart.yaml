@@ -1,7 +1,0 @@
-apiVersion: v1
-name: istio
-description: istio for projectriff
-home: https://projectriff.io
-sources:
-  - https://github.com/projectriff
-icon: https://projectriff.io/images/riff.png

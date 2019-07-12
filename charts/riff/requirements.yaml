@@ -1,3 +1,0 @@
-dependencies:
-  - name: istio
-    condition: istio.enabled

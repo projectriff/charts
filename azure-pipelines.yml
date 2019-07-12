@@ -24,6 +24,7 @@ jobs:
       $(fatsDir)/install.sh riff
       $(fatsDir)/install.sh helm
       $(fatsDir)/install.sh ytt 0.14.0
+      snap install yq
     displayName: 'Install tools'
   - bash: |
       helm init --client-only
@@ -31,7 +32,7 @@ jobs:
     displayName: 'Package charts'
   - bash: $(fatsDir)/start.sh
     displayName: 'Start FATS'
-  - bash: ./ci/install-riff.sh ./repository/riff-$(cat VERSION).tgz
+  - bash: ./ci/install-riff.sh ./repository/istio-lean-$(cat VERSION).tgz ./repository/riff-$(cat VERSION).tgz
     env:
       FATS_DIR: $(fatsDir)
     displayName: 'Install riff'
@@ -63,6 +64,7 @@ jobs:
       $(fatsDir)/install.sh helm
       $(fatsDir)/install.sh gcloud
       $(fatsDir)/install.sh ytt 0.14.0
+      snap install yq
     env:
       GCLOUD_CLIENT_SECRET: '$(GcloudClientSecret)'
     displayName: 'Install tools'

@@ -1,5 +1,0 @@
----
-global:
-  k8s:
-    service:
-      type: LoadBalancer

@@ -27,12 +27,23 @@ Helm charts to install Istio and riff.
    helm repo update
    ```
 
+1. Install Istio
+
+   Append:
+
+   - `--set gateways.istio-ingressgateway.type=NodePort` for clusters that do not support LoadBalancer services, like Minikube.
+   - `--devel` for the latest snapshot.
+   
+   ```sh
+   helm install projectriff/istio-lean --name istio --namespace istio-system --wait
+   ```
+
+For more configuration options see the [Istio documentation](https://archive.istio.io/v1.1/docs/reference/config/installation-options/).
+
 1. Install riff
 
    Append:
 
-   - `--set istio.enabled=true` if Istio is not already installed in your cluster.
-   - `--set global.k8s.service.type=NodePort` for clusters that do not support LoadBalancer services, like Minikube.
    - `--devel` for the latest snapshot.
 
    ```sh
@@ -44,8 +55,14 @@ Helm charts to install Istio and riff.
 ### Uninstall
 
 ```
+# remove riff
 helm delete --purge riff
 kubectl delete customresourcedefinitions.apiextensions.k8s.io -l app.kubernetes.io/managed-by=Tiller,app.kubernetes.io/instance=riff
+
+# remove istio
+helm delete --purge istio
+kubectl delete customresourcedefinitions.apiextensions.k8s.io -l app.kubernetes.io/managed-by=Tiller,app.kubernetes.io/instance=istio
+kubectl delete namespace istio-system
 ```
 
 ## Creating charts
@@ -55,6 +72,7 @@ kubectl delete customresourcedefinitions.apiextensions.k8s.io -l app.kubernetes.
 - internet access
 - helm (2.14+)
 - ytt (0.14.0)
+- yq
 - gcloud (for publishing)
 
 ### Steps
