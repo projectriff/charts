@@ -1,0 +1,3 @@
+# this direcotry is populated via fetch-istio.sh
+*
+!.gitignore
