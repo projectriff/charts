@@ -8,7 +8,7 @@ destination=$3
 
 mkdir -p charts/${chart}/templates
 
-if [ -f charts/${chart}.yaml ] ; then
+if [ -f templates/${chart}.yaml ] ; then
   while IFS= read -r line
   do
     arr=($line)
@@ -26,7 +26,7 @@ if [ -f charts/${chart}.yaml ] ; then
     # apply ytt overlays
     ytt --ignore-unknown-comments -f overlays/ -f ${file} --file-mark $(basename ${file}):type=yaml-plain ${args} > ${file}.tmp
     mv ${file}.tmp ${file}
-  done < "charts/${chart}.yaml"
+  done < "templates/${chart}.yaml"
 fi
 
 if [ -f values/${chart}.yaml ] ; then
