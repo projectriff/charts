@@ -18,5 +18,5 @@ kubectl create serviceaccount ${tiller_service_account} -n ${tiller_namespace}
 kubectl create clusterrolebinding "${tiller_service_account}-cluster-admin" --clusterrole cluster-admin --serviceaccount "${tiller_namespace}:${tiller_service_account}"
 helm init --wait --service-account ${tiller_service_account}
 
-helm install ${istio_chart} --name istio --devel --wait --set gateways.istio-ingressgateway.type=${K8S_SERVICE_TYPE}
+helm install ${istio_chart} --name istio --namespace istio-system --devel --wait --set gateways.istio-ingressgateway.type=${K8S_SERVICE_TYPE}
 helm install ${riff_chart} --name riff --devel
