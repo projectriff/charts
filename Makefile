@@ -3,16 +3,14 @@ VERSION ?= $(shell cat VERSION)
 .PHONY: package
 package: repository
 
-repository: charts fetch-istio.sh package.sh
+repository: charts/fetch-istio.sh charts/package.sh
 	mkdir -p repository
-	./fetch-istio.sh istio 1.1.7
-	./fetch-istio.sh istio-lean 1.1.7
-	./package.sh istio ${VERSION} repository
-	./package.sh istio-lean ${VERSION} repository
-	./package.sh riff ${VERSION} repository
+	./charts/fetch-istio.sh istio 1.1.7
+	./charts/package.sh istio ${VERSION} repository
+	./charts/package.sh riff ${VERSION} repository
 
 .PHONY: clean
 clean:
 	rm -rf repository
-	rm -rf charts/*/templates
-	rm -rf charts/istio*/*
+	rm -rf charts/istio/istio
+	rm -rf charts/riff/riff

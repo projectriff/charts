@@ -32,7 +32,7 @@ jobs:
     displayName: 'Package charts'
   - bash: $(fatsDir)/start.sh
     displayName: 'Start FATS'
-  - bash: ./ci/install-riff.sh ./repository/istio-lean-$(cat VERSION).tgz ./repository/riff-$(cat VERSION).tgz
+  - bash: ./ci/install-riff.sh ./repository/istio-$(cat VERSION).tgz ./repository/riff-$(cat VERSION).tgz
     env:
       FATS_DIR: $(fatsDir)
     displayName: 'Install riff'

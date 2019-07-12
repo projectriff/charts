@@ -9,7 +9,7 @@ commit=$(git rev-parse HEAD)
 
 source $FATS_DIR/.configure.sh
 
-istio_chart=${1:-https://storage.googleapis.com/projectriff/charts/snapshots/istio-lean-${version}-${commit}.tgz}
+istio_chart=${1:-https://storage.googleapis.com/projectriff/charts/snapshots/istio-${version}-${commit}.tgz}
 riff_chart=${2:-https://storage.googleapis.com/projectriff/charts/snapshots/riff-${version}-${commit}.tgz}
 tiller_service_account=${3:-tiller}
 tiller_namespace=${4:-kube-system}
