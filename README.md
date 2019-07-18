@@ -77,6 +77,12 @@ kubectl delete namespace istio-system
 
 ### Steps
 
+Optionally, update the chart templates to the latest component builds.
+
+```sh
+make templates
+```
+
 Package charts locally. Charts will be placed in the `repository` directory.
 
 ```sh

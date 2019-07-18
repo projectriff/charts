@@ -9,6 +9,10 @@ repository: charts/fetch-istio.sh charts/package.sh
 	./charts/package.sh istio ${VERSION} repository
 	./charts/package.sh riff ${VERSION} repository
 
+.PHONY: templates
+templates:
+	./charts/update-template.sh riff
+
 .PHONY: clean
 clean:
 	rm -rf repository
