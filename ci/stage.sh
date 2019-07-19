@@ -4,11 +4,13 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-version=`cat VERSION`
-commit=$(git rev-parse HEAD)
+readonly version=$(cat VERSION)
+readonly git_sha=$(git rev-parse HEAD)
+readonly git_timestamp=$(TZ=UTC git show --quiet --date='format-local:%Y%m%d%H%M%S' --format="%cd")
+readonly slug=${version}-${git_timestamp}-${git_sha:0:16}
 
 helm init --client-only
 make clean package
 
-for f in repository/*.tgz; do mv $f $(echo $f | sed s/${version}/${version}-${commit}/); done
+for f in repository/*.tgz; do mv $f $(echo $f | sed s/${version}/${slug}/); done
 gsutil cp -a public-read repository/*.tgz gs://projectriff/charts/snapshots/
