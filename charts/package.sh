@@ -1,5 +1,9 @@
 #!/bin/bash
 
+set -o errexit
+set -o nounset
+set -o pipefail
+
 chart=$1
 version=$2
 destination=$3
@@ -42,6 +46,15 @@ fi
 
 if [ -f ${chart_dir}/Chart.yaml ] ; then
   cp ${chart_dir}/Chart.yaml ${chart_dir}/${chart}/Chart.yaml
+fi
+
+if [ -f ${chart_dir}/requirements.yaml ] ; then
+  cp ${chart_dir}/requirements.yaml ${chart_dir}/${chart}/requirements.yaml
+fi
+
+if [ -d ${chart_dir}/charts ] ; then
+  mkdir ${chart_dir}/${chart}/charts
+  cp -LR ${chart_dir}/charts/* ${chart_dir}/${chart}/charts/
 fi
 
 helm package ${chart_dir}/${chart} --destination ${destination} --version ${version}

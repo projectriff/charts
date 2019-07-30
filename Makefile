@@ -7,14 +7,17 @@ repository: charts/fetch-istio.sh charts/package.sh
 	mkdir -p repository
 	./charts/fetch-istio.sh istio 1.1.7
 	./charts/package.sh istio ${VERSION} repository
+	./charts/package.sh knative ${VERSION} repository
 	./charts/package.sh riff ${VERSION} repository
 
 .PHONY: templates
 templates:
+	./charts/update-template.sh knative
 	./charts/update-template.sh riff
 
 .PHONY: clean
 clean:
 	rm -rf repository
 	rm -rf charts/istio/istio
+	rm -rf charts/knative/knative
 	rm -rf charts/riff/riff
