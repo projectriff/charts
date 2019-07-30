@@ -37,7 +37,7 @@ if [ -f ${chart_dir}/templates.yaml ] ; then
 fi
 
 if [ -f ${chart_dir}/values.yaml ] ; then
-  if [ -f ${chart_dir}/${chart}/values.yaml ] ; then
+  if [ -f ${build_dir}/values.yaml ] ; then
     # merge custom values
     yq merge -i -x ${build_dir}/values.yaml ${chart_dir}/values.yaml
   else
