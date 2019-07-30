@@ -3,10 +3,10 @@
 chart=$1
 version=$2
 
-chart_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/${chart}"
+build_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )/build/${chart}"
 
-mkdir -p ${chart_dir}/${chart}
-curl -L -s https://storage.googleapis.com/istio-release/releases/${version}/charts/istio-${version}.tgz | tar xz -C ${chart_dir}/${chart} --strip-components 1
+mkdir -p ${build_dir}
+curl -L -s https://storage.googleapis.com/istio-release/releases/${version}/charts/istio-${version}.tgz | tar xz -C ${build_dir} --strip-components 1
 
-cat ${chart_dir}/${chart}/Chart.yaml | sed -e "s/name: istio/name: ${chart}/g" > ${chart_dir}/${chart}/Chart.yaml.tmp
-mv ${chart_dir}/${chart}/Chart.yaml.tmp ${chart_dir}/${chart}/Chart.yaml
+cat ${build_dir}/Chart.yaml | sed -e "s/name: istio/name: ${chart}/g" > ${build_dir}/Chart.yaml.tmp
+mv ${build_dir}/Chart.yaml.tmp ${build_dir}/Chart.yaml

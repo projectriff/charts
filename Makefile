@@ -17,7 +17,5 @@ templates:
 
 .PHONY: clean
 clean:
+	rm -rf build
 	rm -rf repository
-	rm -rf charts/istio/istio
-	rm -rf charts/knative/knative
-	rm -rf charts/riff/riff
