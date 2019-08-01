@@ -1,3 +1,4 @@
+knative-build: https://storage.googleapis.com/knative-releases/build/previous/v0.7.0/build.yaml
 riff-system: https://storage.googleapis.com/projectriff/riff-system/snapshots/riff-system-0.1.0-snapshot-20190809014550-2ab4df7b13f05a9d.yaml
 riff-application-build-template: https://storage.googleapis.com/projectriff/riff-buildtemplate/riff-application-clusterbuildtemplate-0.3.0-snapshot-20190723101418-eebd39e67fd466b2.yaml
 riff-function-build-template: https://storage.googleapis.com/projectriff/riff-buildtemplate/riff-function-clusterbuildtemplate-0.3.0-snapshot-20190723101418-eebd39e67fd466b2.yaml

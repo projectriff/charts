@@ -27,7 +27,7 @@ Helm charts to install Istio and riff.
    helm repo update
    ```
 
-1. Install Istio
+1. Install Istio (optional, required for the Knative runtime)
 
    Append:
 
@@ -44,6 +44,7 @@ Helm charts to install Istio and riff.
 
    Append:
 
+   - `--set knative.enabled=true` to enable the Knative runtime
    - `--devel` for the latest snapshot.
 
    ```sh
@@ -59,7 +60,7 @@ Helm charts to install Istio and riff.
 helm delete --purge riff
 kubectl delete customresourcedefinitions.apiextensions.k8s.io -l app.kubernetes.io/managed-by=Tiller,app.kubernetes.io/instance=riff
 
-# remove istio
+# remove istio (if installed)
 helm delete --purge istio
 kubectl delete customresourcedefinitions.apiextensions.k8s.io -l app.kubernetes.io/managed-by=Tiller,app.kubernetes.io/instance=istio
 kubectl delete namespace istio-system

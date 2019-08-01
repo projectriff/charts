@@ -54,7 +54,7 @@ if [ -f ${chart_dir}/requirements.yaml ] ; then
 fi
 
 if [ -d ${chart_dir}/charts ] ; then
-  mkdir ${build_dir}/charts
+  mkdir -p ${build_dir}/charts
   cp -LR ${chart_dir}/charts/* ${build_dir}/charts/
 fi
 
