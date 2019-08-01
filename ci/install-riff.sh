@@ -21,4 +21,4 @@ kubectl create clusterrolebinding "${tiller_service_account}-cluster-admin" --cl
 helm init --wait --service-account ${tiller_service_account}
 
 helm install ${istio_chart} --name istio --namespace istio-system --devel --wait --set gateways.istio-ingressgateway.type=${K8S_SERVICE_TYPE}
-helm install ${riff_chart} --name riff --devel
+helm install ${riff_chart} --name riff --devel --set knative.enabled=true
