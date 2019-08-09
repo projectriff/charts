@@ -1,7 +1,7 @@
 variables:
   fatsDir: '$(system.defaultWorkingDirectory)/../fats'
   fatsRepo: projectriff/fats
-  fatsRefspec: 4d76fb0d29c92bc5cf560c3d94042e1e46355048 # master as of 2019-08-08
+  fatsRefspec: runtimes # TODO get back to master
   tillerNamespace: kube-system
   tillerServiceAccount: tiller
 
@@ -15,6 +15,10 @@ jobs:
     REGISTRY: 'minikube'
     CLUSTER_NAME: 'charts-$(Build.BuildId)-minikube'
     NAMESPACE: '$(CLUSTER_NAME)'
+    RUNTIME: core
+    FATS_DIR: $(fatsDir)
+    FATS_REPO: $(fatsRepo)
+    FATS_REFSPEC: $(fatsRefspec)
   condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
   steps:
   - bash: ./ci/fats-fetch.sh $(fatsDir) $(fatsRefspec) $(fatsRepo)
@@ -33,15 +37,9 @@ jobs:
   - bash: $(fatsDir)/start.sh
     displayName: 'Start FATS'
   - bash: ./ci/install-riff.sh ./repository/istio-$(cat VERSION).tgz ./repository/riff-$(cat VERSION).tgz
-    env:
-      FATS_DIR: $(fatsDir)
     displayName: 'Install riff'
   - bash: ./ci/run-tests.sh
     displayName: 'Run tests'
-    env:
-      FATS_DIR: $(fatsDir)
-      FATS_REPO: $(fatsRepo)
-      FATS_REFSPEC: $(fatsRefspec)
   - bash: ci/diagnostics.sh
     condition: failed()
     displayName: 'Collect diagnostics'
@@ -81,11 +79,13 @@ jobs:
         qualifier: minikube
         cluster: minikube
         registry: dockerhub
+        runtime: core
       gke:
         imageName: ubuntu-16.04
         qualifier: gke
         cluster: gke
         registry: gcr
+        runtime: knative
   pool:
     vmImage: $(imageName)
   variables:
@@ -93,6 +93,10 @@ jobs:
     REGISTRY: '$(registry)'
     CLUSTER_NAME: 'charts-$(Build.BuildId)-$(qualifier)'
     NAMESPACE: '$(CLUSTER_NAME)'
+    RUNTIME: '$(runtime)'
+    FATS_DIR: $(fatsDir)
+    FATS_REPO: $(fatsRepo)
+    FATS_REFSPEC: $(fatsRefspec)
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   steps:
   - bash: ./ci/fats-fetch.sh $(fatsDir) $(fatsRefspec) $(fatsRepo)
@@ -116,7 +120,6 @@ jobs:
       DOCKER_USERNAME: '$(DockerUsername)'
       DOCKER_PASSWORD: '$(DockerPassword)'
       GCLOUD_CLIENT_SECRET: '$(GcloudClientSecret)'
-      FATS_DIR: $(fatsDir)
     displayName: 'Install riff'
   - bash: ./ci/run-tests.sh
     displayName: 'Run tests'
@@ -124,9 +127,6 @@ jobs:
       DOCKER_USERNAME: '$(DockerUsername)'
       DOCKER_PASSWORD: '$(DockerPassword)'
       GCLOUD_CLIENT_SECRET: '$(GcloudClientSecret)'
-      FATS_DIR: $(fatsDir)
-      FATS_REPO: $(fatsRepo)
-      FATS_REFSPEC: $(fatsRefspec)
   - bash: ci/diagnostics.sh
     condition: failed()
     displayName: 'Collect diagnostics'
