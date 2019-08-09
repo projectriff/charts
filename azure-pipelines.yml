@@ -1,7 +1,7 @@
 variables:
   fatsDir: '$(system.defaultWorkingDirectory)/../fats'
   fatsRepo: projectriff/fats
-  fatsRefspec: 51ae526ebc50b542f51c2f3fd0068898013e02b7 # master as of 2019-08-01
+  fatsRefspec: 4d76fb0d29c92bc5cf560c3d94042e1e46355048 # master as of 2019-08-08
   tillerNamespace: kube-system
   tillerServiceAccount: tiller
 
