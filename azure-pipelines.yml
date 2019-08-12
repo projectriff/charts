@@ -12,7 +12,7 @@ jobs:
     vmImage: 'ubuntu-16.04'
   variables:
     CLUSTER:  'minikube'
-    REGISTRY: 'daemon'
+    REGISTRY: 'docker-daemon'
     CLUSTER_NAME: 'charts-$(Build.BuildId)-minikube'
     NAMESPACE: '$(CLUSTER_NAME)'
     RUNTIME: core
