@@ -56,6 +56,9 @@ Helm charts to install Istio and riff.
 ### Uninstall
 
 ```
+# remove any Knative deployers (if Knative runtime is enabled)
+kubectl delete  --all-namespaces deployer.knative.projectriff.io --all
+
 # remove riff
 helm delete --purge riff
 kubectl delete customresourcedefinitions.apiextensions.k8s.io -l app.kubernetes.io/managed-by=Tiller,app.kubernetes.io/instance=riff
