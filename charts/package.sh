@@ -58,4 +58,4 @@ if [ -d ${chart_dir}/charts ] ; then
   cp -LR ${chart_dir}/charts/* ${build_dir}/charts/
 fi
 
-helm package ${build_dir} --destination ${destination} --version ${version}
+helm package ${build_dir} --destination ${destination} --version ${version} --app-version ${version}
