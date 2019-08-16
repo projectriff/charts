@@ -6,7 +6,7 @@ Helm charts to install Istio and riff.
 
 ### Prerequisites
 
-- a running kubernets cluster (1.11+)
+- a running kubernetes cluster (1.11+)
 - kubectl (1.11+)
 - helm (2.14+)
 
