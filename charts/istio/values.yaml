@@ -1,9 +1,10 @@
-# from https://github.com/knative/serving/blob/master/third_party/istio-1.1.7/values-lean.yaml
+# derived from https://github.com/knative/serving/blob/master/third_party/istio-1.2.4/values-lean.yaml
 
 global:
   proxy:
     # Enable proxy to write access log to /dev/stdout.
     accessLogFile: "/dev/stdout"
+    accessLogEncoding: 'JSON'
     autoInject: disabled
   disablePolicyChecks: true
   omitSidecarInjectorConfigMap: true
@@ -20,8 +21,6 @@ gateways:
     enabled: true
     sds:
       enabled: true
-    autoscaleMin: 1
-    autoscaleMax: 1
     ports:
     - name: status-port
       port: 15020
@@ -35,9 +34,6 @@ gateways:
       app: cluster-local-gateway
       istio: cluster-local-gateway
     replicaCount: 1
-    autoscaleMin: 1
-    autoscaleMax: 1
-    resources: {}
     cpu:
       targetAverageUtilization: 80
     loadBalancerIP: ""
