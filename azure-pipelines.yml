@@ -8,14 +8,28 @@ variables:
 jobs:
 
 - job: test_pr
+  strategy:
+    matrix:
+      core:
+        imageName: ubuntu-16.04
+        qualifier: core
+        cluster: minikube
+        registry: docker-daemon
+        runtime: core
+      knative:
+        imageName: ubuntu-16.04
+        qualifier: knative
+        cluster: minikube
+        registry: docker-daemon
+        runtime: knative
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: $(imageName)
   variables:
-    CLUSTER:  'minikube'
-    REGISTRY: 'docker-daemon'
-    CLUSTER_NAME: 'charts-$(Build.BuildId)-minikube'
+    CLUSTER: $(cluster)
+    REGISTRY: $(registry)
+    CLUSTER_NAME: 'charts-$(Build.BuildId)-$(qualifier)'
     NAMESPACE: '$(CLUSTER_NAME)'
-    RUNTIME: core
+    RUNTIME: $(runtime)
     FATS_DIR: $(fatsDir)
     FATS_REPO: $(fatsRepo)
     FATS_REFSPEC: $(fatsRefspec)
