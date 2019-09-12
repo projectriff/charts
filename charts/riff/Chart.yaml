@@ -9,3 +9,4 @@ home: https://projectriff.io
 sources:
   - https://github.com/projectriff
 icon: https://projectriff.io/images/riff.png
+tillerVersion: '>=2.14'
