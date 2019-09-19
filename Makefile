@@ -9,11 +9,19 @@ repository: charts/fetch-istio.sh charts/package.sh
 	./charts/package.sh istio ${VERSION} repository
 	./charts/package.sh knative ${VERSION} repository
 	./charts/package.sh riff ${VERSION} repository
+	./charts/package.sh riff-build ${VERSION} repository
+	./charts/package.sh riff-core-runtime ${VERSION} repository
+	./charts/package.sh riff-knative-runtime ${VERSION} repository
+	./charts/package.sh riff-streaming-runtime ${VERSION} repository
 
 .PHONY: templates
 templates:
 	./charts/update-template.sh knative
 	./charts/update-template.sh riff
+	./charts/update-template.sh riff-build
+	./charts/update-template.sh riff-core-runtime
+	./charts/update-template.sh riff-knative-runtime
+	./charts/update-template.sh riff-streaming-runtime
 
 .PHONY: clean
 clean:
