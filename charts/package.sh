@@ -58,7 +58,7 @@ if [ -d ${chart_dir}/charts ] ; then
   cp -LR ${chart_dir}/charts/* ${build_dir}/charts/
 fi
 
-if [ ${chart} == 'riff' ] ; then
+if [ ${chart} == riff* ] ; then
   helm package ${build_dir} --destination ${destination} --version ${version} --app-version ${version}
 else
   helm package ${build_dir} --destination ${destination} --version ${version}
