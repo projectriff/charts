@@ -1,0 +1,9 @@
+#@ load("@ytt:overlay", "overlay")
+
+#! replace riff-system with helm provided namespace for all resources
+
+#@overlay/match by=overlay.subset({"metadata":{"namespace":"riff-system"}}), expects="0+"
+---
+metadata:
+  #@overlay/match missing_ok=True
+  namespace: '{{ .Release.Namespace }}'
