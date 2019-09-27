@@ -1,7 +1,7 @@
 #!/bin/bash
 
-tiller_service_account=${1:-tiller}
-tiller_namespace=${2:-kube-system}
+tiller_service_account=tiller
+tiller_namespace=kube-system
 
 uninstall_chart() {
   local name=$1

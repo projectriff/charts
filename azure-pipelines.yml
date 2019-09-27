@@ -2,8 +2,6 @@ variables:
   fatsDir: '$(system.defaultWorkingDirectory)/../fats'
   fatsRepo: projectriff/fats
   fatsRefspec: 963813cd508045459d9f48e664a56b553a322a85 # master as of 2019-09-19
-  tillerNamespace: kube-system
-  tillerServiceAccount: tiller
 
 jobs:
 
@@ -50,7 +48,7 @@ jobs:
     displayName: 'Package charts'
   - bash: $(fatsDir)/start.sh
     displayName: 'Start FATS'
-  - bash: ./ci/install-riff.sh ./repository/istio-$(cat VERSION).tgz ./repository/riff-$(cat VERSION).tgz
+  - bash: ./ci/install-riff.sh unstaged
     displayName: 'Install riff'
   - bash: ./ci/run-tests.sh
     displayName: 'Run tests'
@@ -129,7 +127,7 @@ jobs:
       DOCKER_USERNAME: '$(DockerUsername)'
       DOCKER_PASSWORD: '$(DockerPassword)'
       GCLOUD_CLIENT_SECRET: '$(GcloudClientSecret)'
-  - bash: ./ci/install-riff.sh
+  - bash: ./ci/install-riff.sh staged
     env:
       DOCKER_USERNAME: '$(DockerUsername)'
       DOCKER_PASSWORD: '$(DockerPassword)'

@@ -11,12 +11,24 @@ readonly slug=${version}-${git_timestamp}-${git_sha:0:16}
 
 source $FATS_DIR/.configure.sh
 
-istio_chart=${1:-https://storage.googleapis.com/projectriff/charts/snapshots/istio-${slug}.tgz}
-riff_build_chart=${2:-https://storage.googleapis.com/projectriff/charts/snapshots/riff-build-${slug}.tgz}
-riff_core_runtime_chart=${2:-https://storage.googleapis.com/projectriff/charts/snapshots/riff-core-runtime-${slug}.tgz}
-riff_knative_runtime_chart=${2:-https://storage.googleapis.com/projectriff/charts/snapshots/riff-knative-runtime-${slug}.tgz}
-tiller_service_account=${3:-tiller}
-tiller_namespace=${4:-kube-system}
+if [ ${1:-unknown} = staged ] ; then
+  echo "Using staged charts"
+  istio_chart=https://storage.googleapis.com/projectriff/charts/snapshots/istio-${slug}.tgz
+  riff_build_chart=https://storage.googleapis.com/projectriff/charts/snapshots/riff-build-${slug}.tgz
+  riff_core_runtime_chart=https://storage.googleapis.com/projectriff/charts/snapshots/riff-core-runtime-${slug}.tgz
+  riff_knative_runtime_chart=https://storage.googleapis.com/projectriff/charts/snapshots/riff-knative-runtime-${slug}.tgz
+  riff_streaming_runtime_chart=https://storage.googleapis.com/projectriff/charts/snapshots/riff-streaming-runtime-${slug}.tgz
+else
+  echo "Using locally built charts"
+  istio_chart=./repository/istio-${version}.tgz
+  riff_build_chart=./repository/riff-build-${version}.tgz
+  riff_core_runtime_chart=./repository/riff-core-runtime-${version}.tgz
+  riff_knative_runtime_chart=./repository/riff-knative-runtime-${version}.tgz
+  riff_streaming_runtime_chart=./repository/riff-streaming-runtime-${version}.tgz
+fi
+
+tiller_service_account=tiller
+tiller_namespace=kube-system
 
 kubectl create serviceaccount ${tiller_service_account} -n ${tiller_namespace}
 kubectl create clusterrolebinding "${tiller_service_account}-cluster-admin" --clusterrole cluster-admin --serviceaccount "${tiller_namespace}:${tiller_service_account}"
