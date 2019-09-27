@@ -1,6 +1,10 @@
 #@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
 
 #! Remove riff-system namespace definition
 
+#@ if not data.values.keepRiffSystemNamespace:
 #@overlay/match by=overlay.subset({ "apiVersion": "v1", "kind": "Namespace", "metadata": { "name": "riff-system" } }), expects="0+"
 #@overlay/remove
+---
+#@ end
