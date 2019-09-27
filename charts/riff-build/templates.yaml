@@ -1,1 +1,1 @@
-build-system: https://storage.googleapis.com/projectriff/riff-system/snapshots/riff-build-0.5.0-snapshot-20190923181754-0fc25a91216eec33.yaml
+build-system: https://storage.googleapis.com/projectriff/riff-system/snapshots/riff-build-0.5.0-snapshot-20190923181754-0fc25a91216eec33.yaml # --data-value keepRiffSystemNamespace=true
