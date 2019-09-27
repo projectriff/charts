@@ -1,5 +1,3 @@
 dependencies:
-  - name: kpack
-    condition: kpack.enabled
   - name: riff-builders
     condition: riff.builders.enabled

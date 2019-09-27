@@ -31,7 +31,7 @@ if [ -f ${chart_dir}/templates.yaml ] ; then
     mv ${file}.tmp ${file}
 
     # apply ytt overlays
-    ytt --ignore-unknown-comments -f overlays/ -f ${file} --file-mark $(basename ${file}):type=yaml-plain ${args} > ${file}.tmp
+    ytt -f overlays/ -f ${file} --file-mark $(basename ${file}):type=yaml-plain ${args} > ${file}.tmp
     mv ${file}.tmp ${file}
   done < "${chart_dir}/templates.yaml"
 fi
