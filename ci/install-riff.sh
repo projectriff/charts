@@ -34,7 +34,7 @@ kubectl create serviceaccount ${tiller_service_account} -n ${tiller_namespace}
 kubectl create clusterrolebinding "${tiller_service_account}-cluster-admin" --clusterrole cluster-admin --serviceaccount "${tiller_namespace}:${tiller_service_account}"
 helm init --wait --service-account ${tiller_service_account}
 
-if [ $CLUSTER = "minikube" ]; then
+if [ $(kubectl get nodes -oname | wc -l) = "1" ]; then
   echo "Elimiate pod resource requests"
   kubectl create namespace cert-manager
   kubectl label namespace cert-manager certmanager.k8s.io/disable-validation=true
