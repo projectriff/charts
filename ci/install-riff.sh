@@ -17,6 +17,8 @@ if [ $CLUSTER = "minikube" ]; then
   kubectl label namespace cert-manager certmanager.k8s.io/disable-validation=true
   # TODO remove --validate=false once on k8s 1.13+
   kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v0.10.0/cert-manager.yaml --validate=false
+  wait_pod_selector_ready app.kubernetes.io/name=webhook cert-manager
+  wait_pod_selector_ready app.kubernetes.io/name=cainjector cert-manager
   kubectl apply -f https://storage.googleapis.com/projectriff/no-resource-requests-webhook/no-resource-requests-webhook.yaml
 fi
 
