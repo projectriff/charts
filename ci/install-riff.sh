@@ -19,7 +19,8 @@ if [ $CLUSTER = "minikube" ]; then
   kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v0.10.0/cert-manager.yaml --validate=false
   wait_pod_selector_ready app.kubernetes.io/name=webhook cert-manager
   wait_pod_selector_ready app.kubernetes.io/name=cainjector cert-manager
-  kubectl apply -f https://storage.googleapis.com/projectriff/no-resource-requests-webhook/no-resource-requests-webhook.yaml
+  kubectl apply -f https://storage.googleapis.com/projectriff/no-resource-requests-webhook/no-resource-requests-webhook.yaml --validate=false
+  wait_pod_selector_ready app=webhook no-resource-requests
 fi
 
 if [ ${1:-unknown} = staged ] ; then
