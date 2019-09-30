@@ -11,6 +11,14 @@ readonly slug=${version}-${git_timestamp}-${git_sha:0:16}
 
 source $FATS_DIR/.configure.sh
 
+if [ $CLUSTER = "minikube" ]; then
+  echo "Elimiate pod requests"
+  kubectl create namespace cert-manager
+  kubectl label namespace cert-manager certmanager.k8s.io/disable-validation=true
+  kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v0.10.0/cert-manager.yaml
+  kubectl apply -f https://storage.googleapis.com/projectriff/no-resource-requests-webhook/no-resource-requests-webhook.yaml
+fi
+
 if [ ${1:-unknown} = staged ] ; then
   echo "Using staged charts"
   istio_chart=https://storage.googleapis.com/projectriff/charts/snapshots/istio-${slug}.tgz
