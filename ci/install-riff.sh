@@ -11,18 +11,6 @@ readonly slug=${version}-${git_timestamp}-${git_sha:0:16}
 
 source $FATS_DIR/.configure.sh
 
-if [ $CLUSTER = "minikube" ]; then
-  echo "Elimiate pod requests"
-  kubectl create namespace cert-manager
-  kubectl label namespace cert-manager certmanager.k8s.io/disable-validation=true
-  # TODO remove --validate=false once on k8s 1.13+
-  kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v0.10.0/cert-manager.yaml --validate=false
-  wait_pod_selector_ready app.kubernetes.io/name=webhook cert-manager
-  wait_pod_selector_ready app.kubernetes.io/name=cainjector cert-manager
-  kubectl apply -f https://storage.googleapis.com/projectriff/no-resource-requests-webhook/no-resource-requests-webhook.yaml --validate=false
-  wait_pod_selector_ready app=webhook no-resource-requests
-fi
-
 if [ ${1:-unknown} = staged ] ; then
   echo "Using staged charts"
   istio_chart=https://storage.googleapis.com/projectriff/charts/snapshots/istio-${slug}.tgz
@@ -45,6 +33,18 @@ tiller_namespace=kube-system
 kubectl create serviceaccount ${tiller_service_account} -n ${tiller_namespace}
 kubectl create clusterrolebinding "${tiller_service_account}-cluster-admin" --clusterrole cluster-admin --serviceaccount "${tiller_namespace}:${tiller_service_account}"
 helm init --wait --service-account ${tiller_service_account}
+
+if [ $CLUSTER = "minikube" ]; then
+  echo "Elimiate pod resource requests"
+  kubectl create namespace cert-manager
+  kubectl label namespace cert-manager certmanager.k8s.io/disable-validation=true
+  # TODO remove --validate=false once on k8s 1.13+
+  kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v0.10.0/cert-manager.yaml --validate=false
+  wait_pod_selector_ready app.kubernetes.io/name=webhook cert-manager
+  wait_pod_selector_ready app.kubernetes.io/name=cainjector cert-manager
+  kubectl apply -f https://storage.googleapis.com/projectriff/no-resource-requests-webhook/no-resource-requests-webhook.yaml --validate=false
+  wait_pod_selector_ready app=webhook no-resource-requests
+fi
 
 echo "Install riff Build"
 helm install ${riff_build_chart} --name riff-build --set riff.builders.enabled=true
