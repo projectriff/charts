@@ -1,0 +1,9 @@
+dependencies:
+  - name: riff-build
+    condition: riff.build.enabled
+  - name: riff-core-runtime
+    condition: riff.runtimes.core.enabled
+  - name: riff-knative-runtime
+    condition: riff.runtimes.knative.enabled
+  - name: riff-streaming-runtime
+    condition: riff.runtimes.streaming.enabled

@@ -1,0 +1,17 @@
+---
+knative:
+  enabled: true
+kpack:
+  enabled: true
+riff:
+  build:
+    enabled: true
+  builders:
+    enabled: true
+  runtimes:
+    core:
+      enabled: false
+    knative:
+      enabled: false
+    streaming:
+      enabled: false

@@ -14,6 +14,7 @@ repository: charts/fetch-istio.sh charts/package.sh
 	./charts/package.sh riff-core-runtime ${VERSION} repository
 	./charts/package.sh riff-knative-runtime ${VERSION} repository
 	./charts/package.sh riff-streaming-runtime ${VERSION} repository
+	./charts/package.sh riff ${VERSION} repository
 
 .PHONY: templates
 templates:

@@ -14,17 +14,11 @@ source $FATS_DIR/.configure.sh
 if [ ${1:-unknown} = staged ] ; then
   echo "Using staged charts"
   istio_chart=https://storage.googleapis.com/projectriff/charts/snapshots/istio-${slug}.tgz
-  riff_build_chart=https://storage.googleapis.com/projectriff/charts/snapshots/riff-build-${slug}.tgz
-  riff_core_runtime_chart=https://storage.googleapis.com/projectriff/charts/snapshots/riff-core-runtime-${slug}.tgz
-  riff_knative_runtime_chart=https://storage.googleapis.com/projectriff/charts/snapshots/riff-knative-runtime-${slug}.tgz
-  riff_streaming_runtime_chart=https://storage.googleapis.com/projectriff/charts/snapshots/riff-streaming-runtime-${slug}.tgz
+  riff_chart=https://storage.googleapis.com/projectriff/charts/snapshots/riff-${slug}.tgz
 else
   echo "Using locally built charts"
   istio_chart=./repository/istio-${version}.tgz
-  riff_build_chart=./repository/riff-build-${version}.tgz
-  riff_core_runtime_chart=./repository/riff-core-runtime-${version}.tgz
-  riff_knative_runtime_chart=./repository/riff-knative-runtime-${version}.tgz
-  riff_streaming_runtime_chart=./repository/riff-streaming-runtime-${version}.tgz
+  riff_chart=./repository/riff-${version}.tgz
 fi
 
 tiller_service_account=tiller
@@ -46,17 +40,13 @@ if [ $(kubectl get nodes -oname | wc -l) = "1" ]; then
   wait_pod_selector_ready app=webhook no-resource-requests
 fi
 
-echo "Install riff Build"
-helm install ${riff_build_chart} --name riff-build --set kpack.enabled=true --set riff.builders.enabled=true
-
-if [ $RUNTIME = "core" ]; then
-  echo "Install riff Core Runtime"
-  helm install ${riff_core_runtime_chart} --name riff-core-runtime
-elif [ $RUNTIME = "knative" ]; then
-  echo "Install riff Knative Runtime"
+if [ $RUNTIME = "knative" ]; then
+  echo "Install Istio"
   helm install ${istio_chart} --name istio --namespace istio-system --wait --set gateways.istio-ingressgateway.type=${K8S_SERVICE_TYPE}
-  helm install ${riff_knative_runtime_chart} --name riff-knative-runtime --set knative.enabled=true
 
   echo "Checking for ready ingress"
   wait_for_ingress_ready 'istio-ingressgateway' 'istio-system'
 fi
+
+echo "Install riff"
+helm install ${riff_chart} --name riff --set riff.runtimes.${RUNTIME}.enabled=true

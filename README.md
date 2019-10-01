@@ -6,8 +6,8 @@ Helm charts to install Istio and riff.
 
 ### Prerequisites
 
-- a running kubernetes cluster (1.11+)
-- kubectl (1.11+)
+- a running kubernetes cluster (1.14+)
+- kubectl (1.14+)
 - helm (2.14+)
 
 ### Steps
@@ -44,7 +44,9 @@ Helm charts to install Istio and riff.
 
    Append:
 
-   - `--set knative.enabled=true` to enable the Knative runtime
+   - `--set riff.runtimes.core.enabled=true` to enable the Core runtime
+   - `--set riff.runtimes.knative.enabled=true` to enable the Knative runtime
+   - `--set riff.runtimes.streaming.enabled=true` to enable the Streaming runtime
    - `--devel` for the latest snapshot.
 
    ```sh

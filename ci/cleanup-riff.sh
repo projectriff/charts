@@ -10,22 +10,16 @@ uninstall_chart() {
   kubectl delete customresourcedefinitions.apiextensions.k8s.io -l app.kubernetes.io/managed-by=Tiller,app.kubernetes.io/instance=$name 
 }
 
-if [ $RUNTIME = "core" ]; then
-  echo "Uninstall riff Core Runtime"
-  uninstall_chart riff-core-runtime
-
-elif [ $RUNTIME = "knative" ]; then
-  echo "Uninstall riff Knative Runtime"
-  uninstall_chart riff-knative-runtime
-
+if [ $RUNTIME = "knative" ]; then
+  echo "Uninstall Istio"
   uninstall_chart istio
   # extra cleanup for Istio
   kubectl get customresourcedefinitions.apiextensions.k8s.io -oname | grep istio.io | xargs -L1 kubectl delete
   kubectl delete namespace istio-system
 fi
 
-echo "Uninstall riff Build"
-uninstall_chart riff-build
+echo "Uninstall riff"
+uninstall_chart riff
 
 echo "Uninstall helm"
 helm reset
