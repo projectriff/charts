@@ -49,4 +49,4 @@ if [ $RUNTIME = "knative" ]; then
 fi
 
 echo "Install riff"
-helm install ${riff_chart} --name riff --set riff.runtimes.${RUNTIME}.enabled=true
+helm install ${riff_chart} --name riff --wait --set riff.runtimes.${RUNTIME}.enabled=true
