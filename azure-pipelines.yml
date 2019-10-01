@@ -1,7 +1,7 @@
 variables:
   fatsDir: '$(system.defaultWorkingDirectory)/../fats'
   fatsRepo: projectriff/fats
-  fatsRefspec: 963813cd508045459d9f48e664a56b553a322a85 # master as of 2019-09-19
+  fatsRefspec: 39319f495efec24dcce217f7f51323a18b6ff656 # master as of 2019-10-01
 
 jobs:
 
@@ -11,13 +11,13 @@ jobs:
       core:
         imageName: ubuntu-16.04
         qualifier: core
-        cluster: minikube
+        cluster: kind
         registry: docker-daemon
         runtime: core
       knative:
         imageName: ubuntu-16.04
         qualifier: knative
-        cluster: minikube
+        cluster: kind
         registry: docker-daemon
         runtime: knative
   pool:
@@ -86,10 +86,10 @@ jobs:
   dependsOn: stage
   strategy:
     matrix:
-      minikube:
+      kind:
         imageName: ubuntu-16.04
-        qualifier: minikube
-        cluster: minikube
+        qualifier: kind
+        cluster: kind
         registry: dockerhub
         runtime: core
       gke:
