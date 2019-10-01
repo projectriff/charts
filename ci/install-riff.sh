@@ -38,16 +38,16 @@ if [ $(kubectl get nodes -oname | wc -l) = "1" ]; then
   echo "Elimiate pod resource requests"
   kubectl create namespace cert-manager
   kubectl label namespace cert-manager certmanager.k8s.io/disable-validation=true
-  # TODO remove --validate=false once on k8s 1.13+
-  kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v0.10.0/cert-manager.yaml --validate=false
-  wait_pod_selector_ready app.kubernetes.io/name=webhook cert-manager
+  fats_retry kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v0.10.1/cert-manager.yaml
+  wait_pod_selector_ready app.kubernetes.io/name=cert-manager cert-manager
   wait_pod_selector_ready app.kubernetes.io/name=cainjector cert-manager
-  kubectl apply -f https://storage.googleapis.com/projectriff/no-resource-requests-webhook/no-resource-requests-webhook.yaml --validate=false
+  wait_pod_selector_ready app.kubernetes.io/name=webhook cert-manager
+  fats_retry kubectl apply -f https://storage.googleapis.com/projectriff/no-resource-requests-webhook/no-resource-requests-webhook.yaml
   wait_pod_selector_ready app=webhook no-resource-requests
 fi
 
 echo "Install riff Build"
-helm install ${riff_build_chart} --name riff-build --set riff.builders.enabled=true
+helm install ${riff_build_chart} --name riff-build --set kpack.enabled=true --set riff.builders.enabled=true
 
 if [ $RUNTIME = "core" ]; then
   echo "Install riff Core Runtime"

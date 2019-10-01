@@ -2,5 +2,4 @@
 
 #@data/values
 ---
-dropKnativeImageCRD: false
 keepRiffSystemNamespace: false

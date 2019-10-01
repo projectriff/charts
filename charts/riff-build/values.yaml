@@ -1,4 +1,6 @@
 ---
+kpack:
+  enabled: false
 riff:
   builders:
     enabled: false
