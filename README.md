@@ -8,7 +8,7 @@ Helm charts to install Istio and riff.
 
 - a running kubernetes cluster (1.14+)
 - kubectl (1.14+)
-- helm (2.14+)
+- helm (2.13+)
 
 ### Steps
 
@@ -79,7 +79,7 @@ kubectl get customresourcedefinitions.apiextensions.k8s.io -oname | grep istio.i
 ### Prerequisites
 
 - internet access
-- helm (2.14+)
+- helm (2.13+)
 - ytt (0.14.0)
 - yq
 - gcloud (for publishing)

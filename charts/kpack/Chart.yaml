@@ -6,4 +6,4 @@ home: https://projectriff.io
 sources:
   - https://github.com/pivotal/kpack
 icon: https://projectriff.io/images/riff.png
-tillerVersion: '>=2.14'
+tillerVersion: '>=2.13'
