@@ -7,6 +7,7 @@ repository: charts/fetch-istio.sh charts/package.sh
 	mkdir -p repository
 	./charts/fetch-istio.sh istio 1.2.5
 	./charts/package.sh istio ${VERSION} repository
+	./charts/package.sh keda ${VERSION} repository
 	./charts/package.sh knative ${VERSION} repository
 	./charts/package.sh kpack ${VERSION} repository
 	./charts/package.sh riff-builders ${VERSION} repository
@@ -18,6 +19,7 @@ repository: charts/fetch-istio.sh charts/package.sh
 
 .PHONY: templates
 templates:
+	./charts/update-template.sh keda
 	./charts/update-template.sh knative
 	./charts/update-template.sh kpack
 	./charts/update-template.sh riff-builders

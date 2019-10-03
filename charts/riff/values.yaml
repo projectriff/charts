@@ -1,4 +1,6 @@
 ---
+keda:
+  enabled: true
 knative:
   enabled: true
 kpack:
