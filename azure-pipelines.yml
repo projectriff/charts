@@ -1,7 +1,14 @@
 variables:
   fatsDir: '$(system.defaultWorkingDirectory)/../fats'
   fatsRepo: projectriff/fats
-  fatsRefspec: 26b7e2251a78ed452d5cf99e02b41658e9aafa77 # master as of 2019-10-01
+  fatsRefspec: b1a0cf8b019528ede7e49322e33069e1356c7de5 # master as of 2019-10-07
+
+resources:
+  repositories:
+    - repository: fats
+      type: github
+      name: $(fatsRepo)
+      ref: $(fatsRefspec)
 
 jobs:
 
@@ -52,9 +59,12 @@ jobs:
     displayName: 'Install riff'
   - bash: ./ci/run-tests.sh
     displayName: 'Run tests'
-  - bash: ci/diagnostics.sh
-    condition: failed()
+  - bash: $(fatsDir)/diagnostics.sh
+    condition: always()
+    timeoutInMinutes: 1
+    continueOnError: true
     displayName: 'Collect diagnostics'
+  - template: ci/dump-diagnostics-steps.yml@fats
   - bash: ./ci/cleanup-riff.sh
     condition: always()
     displayName: 'Uninstall riff'
@@ -139,9 +149,12 @@ jobs:
       DOCKER_USERNAME: '$(DockerUsername)'
       DOCKER_PASSWORD: '$(DockerPassword)'
       GCLOUD_CLIENT_SECRET: '$(GcloudClientSecret)'
-  - bash: ci/diagnostics.sh
-    condition: failed()
+  - bash: $(fatsDir)/diagnostics.sh
+    condition: always()
+    timeoutInMinutes: 1
+    continueOnError: true
     displayName: 'Collect diagnostics'
+  - template: ci/dump-diagnostics-steps.yml@fats
   - bash: ./ci/cleanup-riff.sh
     condition: always()
     displayName: 'Uninstall riff'
