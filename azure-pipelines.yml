@@ -7,8 +7,8 @@ resources:
   repositories:
     - repository: fats
       type: github
-      name: $(fatsRepo)
-      ref: $(fatsRefspec)
+      name: projectriff/fats
+      ref: b1a0cf8b019528ede7e49322e33069e1356c7de5 # master as of 2019-10-07
 
 jobs:
 
