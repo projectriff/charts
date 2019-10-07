@@ -1,14 +1,7 @@
 variables:
   fatsDir: '$(system.defaultWorkingDirectory)/../fats'
   fatsRepo: projectriff/fats
-  fatsRefspec: b1a0cf8b019528ede7e49322e33069e1356c7de5 # master as of 2019-10-07
-
-resources:
-  repositories:
-    - repository: fats
-      type: github
-      name: projectriff/fats
-      ref: b1a0cf8b019528ede7e49322e33069e1356c7de5 # master as of 2019-10-07
+  fatsRefspec: e3ef4a298b1abaf0a2a00198db9ed4eba17949df # master as of 2019-10-07
 
 jobs:
 
@@ -64,7 +57,6 @@ jobs:
     timeoutInMinutes: 1
     continueOnError: true
     displayName: 'Collect diagnostics'
-  - template: ci/dump-diagnostics-steps.yml@fats
   - bash: ./ci/cleanup-riff.sh
     condition: always()
     displayName: 'Uninstall riff'
@@ -154,7 +146,6 @@ jobs:
     timeoutInMinutes: 1
     continueOnError: true
     displayName: 'Collect diagnostics'
-  - template: ci/dump-diagnostics-steps.yml@fats
   - bash: ./ci/cleanup-riff.sh
     condition: always()
     displayName: 'Uninstall riff'
