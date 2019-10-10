@@ -1,14 +1,13 @@
 #!/bin/bash
 
-tiller_service_account=tiller
-tiller_namespace=kube-system
-
 uninstall_chart() {
   local name=$1
 
   helm delete --purge $name
   kubectl delete customresourcedefinitions.apiextensions.k8s.io -l app.kubernetes.io/managed-by=Tiller,app.kubernetes.io/instance=$name 
 }
+
+source $FATS_DIR/macros/cleanup-user-resources.sh
 
 if [ $RUNTIME = "knative" ]; then
   echo "Uninstall Istio"
@@ -22,7 +21,4 @@ echo "Uninstall riff"
 uninstall_chart riff
 
 echo "Uninstall helm"
-helm reset
-
-kubectl delete serviceaccount ${tiller_service_account} -n ${tiller_namespace}
-kubectl delete clusterrolebinding "${tiller_service_account}-cluster-admin"
+source $FATS_DIR/macros/helm-cleanup.sh

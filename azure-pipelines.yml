@@ -1,7 +1,7 @@
 variables:
   fatsDir: '$(system.defaultWorkingDirectory)/../fats'
   fatsRepo: projectriff/fats
-  fatsRefspec: e3ef4a298b1abaf0a2a00198db9ed4eba17949df # master as of 2019-10-07
+  fatsRefspec: d26fa5dfd47f5cb74ca44a4fa41db11ec0942f14 # master as of 2019-10-10
 
 jobs:
 
