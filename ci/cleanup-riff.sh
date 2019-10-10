@@ -21,4 +21,4 @@ echo "Uninstall riff"
 uninstall_chart riff
 
 echo "Uninstall helm"
-source $FATS_DIR/macros/helm-cleanup.sh
+source $FATS_DIR/macros/helm-reset.sh
