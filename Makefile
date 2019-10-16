@@ -3,7 +3,8 @@ VERSION ?= $(shell cat VERSION)
 .PHONY: package
 package: repository
 
-repository: charts/fetch-istio.sh charts/package.sh
+.PHONY: repository
+repository:
 	mkdir -p repository
 	./charts/fetch-istio.sh istio 1.2.5
 	./charts/package.sh istio ${VERSION} repository
