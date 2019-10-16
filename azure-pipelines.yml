@@ -1,7 +1,7 @@
 variables:
   fatsDir: '$(system.defaultWorkingDirectory)/../fats'
   fatsRepo: projectriff/fats
-  fatsRefspec: d26fa5dfd47f5cb74ca44a4fa41db11ec0942f14 # master as of 2019-10-10
+  fatsRefspec: f49faae3d6cba32993fae99c6e39c41d9cd1598a # master as of 2019-10-16
 
 jobs:
 
@@ -39,7 +39,8 @@ jobs:
       $(fatsDir)/install.sh kubectl
       $(fatsDir)/install.sh riff
       $(fatsDir)/install.sh helm
-      $(fatsDir)/install.sh ytt 0.14.0
+      $(fatsDir)/install.sh ytt
+      $(fatsDir)/install.sh kbld
       sudo snap install yq
     displayName: 'Install tools'
   - bash: |
