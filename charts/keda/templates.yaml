@@ -1,1 +1,1 @@
-keda: https://github.com/kedacore/keda/raw/32f9823070a6dfc9cb5ad6100305a171abc6db83/deploy/KedaScaleController.yaml
+keda: https://raw.githubusercontent.com/sbawaska/keda/rm-clusterrole/deploy/KedaScaleController.yaml
