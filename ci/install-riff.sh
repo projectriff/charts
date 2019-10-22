@@ -13,16 +13,22 @@ source $FATS_DIR/.configure.sh
 
 if [ ${1:-unknown} = staged ] ; then
   echo "Using staged charts"
+  certmanager_chart=https://storage.googleapis.com/projectriff/charts/snapshots/cert-manager-${slug}.tgz
   istio_chart=https://storage.googleapis.com/projectriff/charts/snapshots/istio-${slug}.tgz
   riff_chart=https://storage.googleapis.com/projectriff/charts/snapshots/riff-${slug}.tgz
 else
   echo "Using locally built charts"
+  certmanager_chart=./repository/cert-manager-${version}.tgz
   istio_chart=./repository/istio-${version}.tgz
   riff_chart=./repository/riff-${version}.tgz
 fi
 
-source $FATS_DIR/macros/no-resource-requests.sh
 source $FATS_DIR/macros/helm-init.sh
+
+echo "Install Cert Manager"
+helm install ${certmanager_chart} --name cert-manager --wait
+
+source $FATS_DIR/macros/no-resource-requests.sh
 
 if [ $RUNTIME = "knative" ]; then
   echo "Install Istio"

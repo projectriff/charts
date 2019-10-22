@@ -20,5 +20,8 @@ fi
 echo "Uninstall riff"
 uninstall_chart riff
 
+echo "Uninstall Cert Manager"
+uninstall_chart cert-manager
+
 echo "Uninstall helm"
 source $FATS_DIR/macros/helm-reset.sh
