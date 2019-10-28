@@ -1,4 +1,6 @@
 dependencies:
+  - name: cert-manager
+    condition: cert-manager.enabled
   - name: riff-build
     condition: riff.build.enabled
   - name: riff-core-runtime
