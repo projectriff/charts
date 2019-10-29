@@ -5,7 +5,7 @@ package: repository
 
 repository: charts/fetch-istio.sh charts/package.sh
 	mkdir -p repository
-	./charts/fetch-istio.sh istio 1.2.5
+	./charts/fetch-istio.sh istio 1.3.3
 	./charts/package.sh cert-manager ${VERSION} repository
 	./charts/package.sh istio ${VERSION} repository
 	./charts/package.sh keda ${VERSION} repository
