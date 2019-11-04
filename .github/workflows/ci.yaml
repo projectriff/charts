@@ -69,11 +69,11 @@ jobs:
       if: always()
       timeout-minutes: 1
     - name: Uninstall riff
-      bash: ./github/workflow/cleanup-riff.sh
+      run: ./github/workflow/cleanup-riff.sh
       if: always()
       timeout-minutes: 10
     - name: Cleanup FATS
-      bash: $FATS_DIR/cleanup.sh
+      run: $FATS_DIR/cleanup.sh
       if: always()
       timeout-minutes: 10
 
@@ -151,11 +151,11 @@ jobs:
       if: always()
       timeout-minutes: 1
     - name: Uninstall riff
-      bash: ./github/workflow/cleanup-riff.sh
+      run: ./github/workflow/cleanup-riff.sh
       if: always()
       timeout-minutes: 10
     - name: Cleanup FATS
-      bash: $FATS_DIR/cleanup.sh
+      run: $FATS_DIR/cleanup.sh
       if: always()
       timeout-minutes: 10
 
@@ -172,14 +172,12 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Fetch FATS
-      bash: ./github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
+      run: ./github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
     - name: Install tools
-      bash: |
+      run: |
         $FATS_DIR/install.sh helm
         $FATS_DIR/install.sh gcloud
       env:
         GCLOUD_CLIENT_SECRET: ${{ secrets.GCLOUD_CLIENT_SECRET }}
     - name: Publish Chart
-      bash: ./github/workflows/publish.sh
-      
-  
+      run: ./github/workflows/publish.sh
