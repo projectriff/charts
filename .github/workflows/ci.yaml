@@ -1,0 +1,185 @@
+name: CI
+
+on:
+  push:
+    branches:
+    - '**'
+    - '!dependabot/**'
+  pull_request: {}
+
+env:
+  FATS_DIR: fats
+  FATS_REPO: projectriff/fats
+  FATS_REFSPEC: 5ae597a5bdd1fec772217c4e7a816ce518ed3aa6 # master as of 2019-10-22
+
+jobs:
+
+  test_pr:
+    name: Test PR
+    if: github.event_name == 'pull_request'
+    strategy:
+      matrix:
+        config:
+        - os: ubuntu-latest
+          qualifier: core
+          cluster: kind
+          registry: docker-daemon
+          runtime: core
+        - os: ubuntu-latest
+          qualifier: knative
+          cluster: kind
+          registry: docker-daemon
+          runtime: knative
+      fail-fast: false
+    runs-on: ${{ matrix.config.os }}
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup env
+      run: |
+        job=$(date +%s) # TODO use something that is assigned by CI to guarantee uniqueness
+        echo "JOB_ID=${job}"
+
+        echo "##[set-env name=CLUSTER]${{ matrix.config.cluster }}"
+        echo "##[set-env name=REGISTRY]${{ matrix.config.registry }}"
+        echo "##[set-env name=CLUSTER_NAME]fats-${job}-${{ matrix.config.qualifier }}"
+        echo "##[set-env name=NAMESPACE]fats-${job}-${{ matrix.config.qualifier }}"
+        echo "##[set-env name=RUNTIME]${{ matrix.config.runtime }}"
+    - name: Fetch FATS
+      run: ./github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
+    - name: Install tools
+      run: |
+        $FATS_DIR/install.sh kubectl
+        $FATS_DIR/install.sh riff
+        $FATS_DIR/install.sh helm
+        $FATS_DIR/install.sh ytt 0.14.0
+        sudo snap install yq
+    - name: Package charts
+      run: |
+        helm init --client-only
+        make clean package
+    - name: Start FATS
+      run: $FATS_DIR/start.sh
+    - name: Install riff
+      run: ./github/workflow/install-riff.sh unstaged
+    - name: Run tests
+      run: ./github/workflow/run-tests.sh
+      timeout-minutes: 30
+    - name: Collect diagnostics
+      run: $FATS_DIR/diagnostics.sh
+      if: always()
+      timeout-minutes: 1
+    - name: Uninstall riff
+      bash: ./github/workflow/cleanup-riff.sh
+      if: always()
+      timeout-minutes: 10
+    - name: Cleanup FATS
+      bash: $FATS_DIR/cleanup.sh
+      if: always()
+      timeout-minutes: 10
+
+  stage:
+    name: Stage charts
+    if: github.event_name == 'push' && startsWith(github.repository, 'projectriff/')
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Fetch FATS
+      run: ./github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
+    - name: Install tools
+      run: |
+        $FATS_DIR/install.sh helm
+        $FATS_DIR/install.sh gcloud
+        $FATS_DIR/install.sh ytt 0.14.0
+        sudo snap install yq
+      env:
+        GCLOUD_CLIENT_SECRET: ${{ secrets.GCLOUD_CLIENT_SECRET }}
+    - name: Stage projectriff chart artifacts
+      run: ./github/workflows/stage.sh
+
+  test:
+    name: Test
+    needs: stage
+    if: github.event_name == 'push' && startsWith(github.repository, 'projectriff/')
+    strategy:
+      matrix:
+        config:
+        - os: ubuntu-latest
+          qualifier: core
+          cluster: kind
+          registry: dockerhub
+          runtime: core
+        - os: ubuntu-latest
+          qualifier: knative
+          cluster: gke
+          registry: gcr
+          runtime: knative
+      fail-fast: false
+    runs-on: ${{ matrix.config.os }}
+    env:
+      DOCKER_USERNAME: '$(DockerUsername)'
+      DOCKER_PASSWORD: '$(DockerPassword)'
+      GCLOUD_CLIENT_SECRET: ${{ secrets.GCLOUD_CLIENT_SECRET }}
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup env
+      run: |
+        job=$(date +%s) # TODO use something that is assigned by CI to guarantee uniqueness
+        echo "JOB_ID=${job}"
+
+        echo "##[set-env name=CLUSTER]${{ matrix.config.cluster }}"
+        echo "##[set-env name=REGISTRY]${{ matrix.config.registry }}"
+        echo "##[set-env name=CLUSTER_NAME]fats-${job}-${{ matrix.config.qualifier }}"
+        echo "##[set-env name=NAMESPACE]fats-${job}-${{ matrix.config.qualifier }}"
+        echo "##[set-env name=RUNTIME]${{ matrix.config.runtime }}"
+    - name: Fetch FATS
+      run: ./github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
+    - name: Install tools
+      run: |
+        $FATS_DIR/install.sh kubectl
+        $FATS_DIR/install.sh riff
+        $FATS_DIR/install.sh helm
+        $FATS_DIR/install.sh gcloud
+    - name: Start FATS
+      run: $FATS_DIR/start.sh
+    - name: Install riff
+      run: ./github/workflow/install-riff.sh staged
+    - name: Run tests
+      run: ./github/workflow/run-tests.sh
+      timeout-minutes: 30
+    - name: Collect diagnostics
+      run: $FATS_DIR/diagnostics.sh
+      if: always()
+      timeout-minutes: 1
+    - name: Uninstall riff
+      bash: ./github/workflow/cleanup-riff.sh
+      if: always()
+      timeout-minutes: 10
+    - name: Cleanup FATS
+      bash: $FATS_DIR/cleanup.sh
+      if: always()
+      timeout-minutes: 10
+
+  publish:
+    name: Publish
+    needs: test
+    if: |
+      github.event_name == 'push' && startsWith(github.repository, 'projectriff/') && (
+        github.ref == 'refs/heads/master' || (
+          startsWith(github.ref, 'refs/heads/v') && endsWith(github.ref, 'x')
+        )
+      )
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Fetch FATS
+      bash: ./github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
+    - name: Install tools
+      bash: |
+        $FATS_DIR/install.sh helm
+        $FATS_DIR/install.sh gcloud
+      env:
+        GCLOUD_CLIENT_SECRET: ${{ secrets.GCLOUD_CLIENT_SECRET }}
+    - name: Publish Chart
+      bash: ./github/workflows/publish.sh
+      
+  
