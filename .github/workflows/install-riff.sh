@@ -27,6 +27,9 @@ source $FATS_DIR/macros/helm-init.sh
 
 echo "Install Cert Manager"
 helm install ${certmanager_chart} --name cert-manager --wait
+sleep 5
+wait_pod_selector_ready app=cert-manager cert-manager
+wait_pod_selector_ready app=webhook cert-manager
 
 source $FATS_DIR/macros/no-resource-requests.sh
 
