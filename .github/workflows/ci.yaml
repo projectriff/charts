@@ -45,7 +45,7 @@ jobs:
         echo "##[set-env name=NAMESPACE]fats-${job}-${{ matrix.config.qualifier }}"
         echo "##[set-env name=RUNTIME]${{ matrix.config.runtime }}"
     - name: Fetch FATS
-      run: ./github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
+      run: ./.github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
     - name: Install tools
       run: |
         $FATS_DIR/install.sh kubectl
@@ -60,16 +60,16 @@ jobs:
     - name: Start FATS
       run: $FATS_DIR/start.sh
     - name: Install riff
-      run: ./github/workflow/install-riff.sh unstaged
+      run: ./.github/workflows/install-riff.sh unstaged
     - name: Run tests
-      run: ./github/workflow/run-tests.sh
+      run: ./.github/workflows/run-tests.sh
       timeout-minutes: 30
     - name: Collect diagnostics
       run: $FATS_DIR/diagnostics.sh
       if: always()
       timeout-minutes: 1
     - name: Uninstall riff
-      run: ./github/workflow/cleanup-riff.sh
+      run: ./.github/workflows/cleanup-riff.sh
       if: always()
       timeout-minutes: 10
     - name: Cleanup FATS
@@ -84,7 +84,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Fetch FATS
-      run: ./github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
+      run: ./.github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
     - name: Install tools
       run: |
         $FATS_DIR/install.sh helm
@@ -94,7 +94,7 @@ jobs:
       env:
         GCLOUD_CLIENT_SECRET: ${{ secrets.GCLOUD_CLIENT_SECRET }}
     - name: Stage projectriff chart artifacts
-      run: ./github/workflows/stage.sh
+      run: ./.github/workflows/stage.sh
 
   test:
     name: Test
@@ -132,7 +132,7 @@ jobs:
         echo "##[set-env name=NAMESPACE]fats-${job}-${{ matrix.config.qualifier }}"
         echo "##[set-env name=RUNTIME]${{ matrix.config.runtime }}"
     - name: Fetch FATS
-      run: ./github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
+      run: ./.github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
     - name: Install tools
       run: |
         $FATS_DIR/install.sh kubectl
@@ -142,16 +142,16 @@ jobs:
     - name: Start FATS
       run: $FATS_DIR/start.sh
     - name: Install riff
-      run: ./github/workflow/install-riff.sh staged
+      run: ./.github/workflows/install-riff.sh staged
     - name: Run tests
-      run: ./github/workflow/run-tests.sh
+      run: ./.github/workflows/run-tests.sh
       timeout-minutes: 30
     - name: Collect diagnostics
       run: $FATS_DIR/diagnostics.sh
       if: always()
       timeout-minutes: 1
     - name: Uninstall riff
-      run: ./github/workflow/cleanup-riff.sh
+      run: ./.github/workflows/cleanup-riff.sh
       if: always()
       timeout-minutes: 10
     - name: Cleanup FATS
@@ -172,7 +172,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Fetch FATS
-      run: ./github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
+      run: ./.github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
     - name: Install tools
       run: |
         $FATS_DIR/install.sh helm
@@ -180,4 +180,4 @@ jobs:
       env:
         GCLOUD_CLIENT_SECRET: ${{ secrets.GCLOUD_CLIENT_SECRET }}
     - name: Publish Chart
-      run: ./github/workflows/publish.sh
+      run: ./.github/workflows/publish.sh
