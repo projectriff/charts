@@ -10,7 +10,7 @@ on:
 env:
   FATS_DIR: fats
   FATS_REPO: projectriff/fats
-  FATS_REFSPEC: 5ae597a5bdd1fec772217c4e7a816ce518ed3aa6 # master as of 2019-10-22
+  FATS_REFSPEC: cc18c08f42bb628c5bf0f01cf5ec4bb447b328cb # master as of 2019-11-02
 
 jobs:
 
