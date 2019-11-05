@@ -49,6 +49,12 @@ if [ -f ${chart_dir}/values.yaml ] ; then
   fi
 fi
 
+# Resolve any image tags to digests in our values.yaml
+if [ -f ${build_dir}/values.yaml ] ; then
+    k8s-tag-resolver ${build_dir}/values.yaml -o ${build_dir}/values.yaml.tmp
+    mv ${build_dir}/values.yaml.tmp ${build_dir}/values.yaml
+fi
+
 if [ -f ${chart_dir}/Chart.yaml ] ; then
   cp ${chart_dir}/Chart.yaml ${build_dir}/Chart.yaml
 fi
