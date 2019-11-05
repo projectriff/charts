@@ -10,7 +10,7 @@ on:
 env:
   FATS_DIR: fats
   FATS_REPO: projectriff/fats
-  FATS_REFSPEC: cc18c08f42bb628c5bf0f01cf5ec4bb447b328cb # master as of 2019-11-02
+  FATS_REFSPEC: 9d603d32e5ee97658e04278573942b5643939ac0 # master as of 2019-11-05
 
 jobs:
 
@@ -52,6 +52,7 @@ jobs:
         $FATS_DIR/install.sh riff
         $FATS_DIR/install.sh helm
         $FATS_DIR/install.sh ytt 0.14.0
+        $FATS_DIR/install.sh k8s-tag-resolver
         sudo snap install yq
     - name: Package charts
       run: |
