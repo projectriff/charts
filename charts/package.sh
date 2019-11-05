@@ -40,6 +40,10 @@ if [ -f ${chart_dir}/templates.yaml ] ; then
   done < "${chart_dir}/templates.yaml"
 fi
 
+if [ -f ${chart_dir}/values.yaml.tpl ] ; then
+  $( dirname "${BASH_SOURCE[0]}" )/apply-template.sh ${chart_dir}/values.yaml.tpl > ${chart_dir}/values.yaml
+fi
+
 if [ -f ${chart_dir}/values.yaml ] ; then
   if [ -f ${build_dir}/values.yaml ] ; then
     # merge custom values

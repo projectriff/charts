@@ -1,11 +1,12 @@
 VERSION ?= $(shell cat VERSION)
+export ISTIO_VERSION = 1.3.3
 
 .PHONY: package
 package: repository
 
 repository: charts/fetch-istio.sh charts/package.sh
 	mkdir -p repository
-	./charts/fetch-istio.sh istio 1.3.3
+	./charts/fetch-istio.sh istio $(ISTIO_VERSION)
 	./charts/package.sh cert-manager ${VERSION} repository
 	./charts/package.sh istio ${VERSION} repository
 	./charts/package.sh keda ${VERSION} repository

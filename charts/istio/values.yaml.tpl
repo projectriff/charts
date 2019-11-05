@@ -7,9 +7,9 @@ global:
     accessLogFile: "/dev/stdout"
     accessLogEncoding: 'JSON'
     autoInject: disabled
-    image: docker.io/istio/proxyv2:1.3.3
+    image: docker.io/istio/proxyv2:{{ echo $ISTIO_VERSION }}
   proxy_init:
-    image: docker.io/istio/proxy_init:1.3.3
+    image: docker.io/istio/proxy_init:{{ echo $ISTIO_VERSION }}
   disablePolicyChecks: true
   omitSidecarInjectorConfigMap: true
   defaultPodDisruptionBudget:
@@ -19,10 +19,10 @@ global:
   # This is noop until this merges https://github.com/istio/istio/pull/18642
   # and is backported to a release riff is using
   kubectl:
-    image: docker.io/istio/kubectl:1.3.3
+    image: docker.io/istio/kubectl:{{ echo $ISTIO_VERSION }}
 
 sidecarInjectorWebhook:
-  image: docker.io/istio/sidecar_injector:1.3.3
+  image: docker.io/istio/sidecar_injector:{{ echo $ISTIO_VERSION }}
   enabled: false
   enableNamespacesByDefault: false
 
@@ -71,7 +71,7 @@ prometheus:
   enabled: false
 
 mixer:
-  image: docker.io/istio/mixer:1.3.3
+  image: docker.io/istio/mixer:{{ echo $ISTIO_VERSION }}
   enabled: false
   policy:
     enabled: false
@@ -82,7 +82,7 @@ mixer:
       enabled: false
 
 pilot:
-  image: docker.io/istio/pilot:1.3.3
+  image: docker.io/istio/pilot:{{ echo $ISTIO_VERSION }}
   traceSampling: 100
   sidecar: false
   resources:
@@ -91,13 +91,13 @@ pilot:
       memory: 256Mi
 
 galley:
-  image: docker.io/istio/galley:1.3.3
+  image: docker.io/istio/galley:{{ echo $ISTIO_VERSION }}
   enabled: false
 
 security:
-  image: docker.io/istio/citadel:1.3.3
+  image: docker.io/istio/citadel:{{ echo $ISTIO_VERSION }}
   enabled: false
 
 nodeagent:
-  image: docker.io/istio/node-agent-k8s:1.3.3
+  image: docker.io/istio/node-agent-k8s:{{ echo $ISTIO_VERSION }}
 
