@@ -1,4 +1,5 @@
 # derived from https://github.com/knative/serving/blob/master/third_party/istio-1.3.3/values-lean.yaml
+# also see https://istio.io/docs/reference/config/installation-options/
 
 global:
   proxy:
@@ -6,13 +7,22 @@ global:
     accessLogFile: "/dev/stdout"
     accessLogEncoding: 'JSON'
     autoInject: disabled
+    image: gcr.io/cf-routing/proxyv2@sha256:59297b89888becbba9cfd1965ac49bc42460b5655ca7f12c9dc89bbeefa70c5d
+  proxy_init:
+    image: gcr.io/cf-routing/proxy_init@sha256:5db6a69f2837a83d41ad44f2e7fe4adaaf753d5d93d575cd0d6876b997b3bf30
   disablePolicyChecks: true
   omitSidecarInjectorConfigMap: true
   defaultPodDisruptionBudget:
     enabled: false
   useMCP: false
 
+  # This is noop until this merges https://github.com/istio/istio/pull/18642
+  # and is backported to a release riff is using
+  kubectl:
+    image: gcr.io/cf-routing/kubectl@sha256:eed970331bf02384e88a6b5ee5a3442b96e58beb7b54ca08e26513cad8a5a6df
+
 sidecarInjectorWebhook:
+  image: gcr.io/cf-routing/sidecar_injector@sha256:29b85f37921a14643384a54ebb96efd0b9fbc96822609c3d5e0cbc73d5e8517c
   enabled: false
   enableNamespacesByDefault: false
 
@@ -61,6 +71,7 @@ prometheus:
   enabled: false
 
 mixer:
+  image: gcr.io/cf-routing/mixer@sha256:22a971708d8dbba19db95db660554a614fc67030a5a2d51298b2508612ec804f
   enabled: false
   policy:
     enabled: false
@@ -71,6 +82,7 @@ mixer:
       enabled: false
 
 pilot:
+  image: gcr.io/cf-routing/pilot@sha256:f0d3a0b0f3459770cf4838a16281dfe018ed46eb3c92f4a2b86a017913c61d78
   traceSampling: 100
   sidecar: false
   resources:
@@ -79,7 +91,13 @@ pilot:
       memory: 256Mi
 
 galley:
+  image: gcr.io/cf-routing/galley@sha256:8680339a0928cf113239516cb1baa1cb1e340ef4ac965d72060a00362427d62d
   enabled: false
 
 security:
+  image: gcr.io/cf-routing/citadel@sha256:2ee5fadc1b7f606afab3db07adb75f5cd002d496b86f0297d47022bd9db555de
   enabled: false
+
+nodeagent:
+  image: gcr.io/cf-routing/node-agent-k8s@sha256:248c8ab88fabcb92cc39f42f42631e7328269ff478561f6c84fab97d21c49eb4
+
