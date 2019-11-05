@@ -44,6 +44,7 @@ jobs:
         echo "##[set-env name=CLUSTER_NAME]charts-${job}-${{ matrix.config.qualifier }}"
         echo "##[set-env name=NAMESPACE]charts-${job}-${{ matrix.config.qualifier }}"
         echo "##[set-env name=RUNTIME]${{ matrix.config.runtime }}"
+        echo "##[add-path]$(go env GOPATH)/bin"
     - name: Fetch FATS
       run: ./.github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
     - name: Install tools
@@ -84,6 +85,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Setup env
+      run: |
+        echo "##[add-path]$(go env GOPATH)/bin"
     - name: Fetch FATS
       run: ./.github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
     - name: Install tools
@@ -91,6 +95,7 @@ jobs:
         $FATS_DIR/install.sh helm
         $FATS_DIR/install.sh gcloud
         $FATS_DIR/install.sh ytt 0.14.0
+        $FATS_DIR/install.sh k8s-tag-resolver
         sudo snap install yq
       env:
         GCLOUD_CLIENT_SECRET: ${{ secrets.GCLOUD_CLIENT_SECRET }}
