@@ -32,8 +32,11 @@ if [ -f ${chart_dir}/templates.yaml ] ; then
 
     # apply ytt overlays
     ytt -f overlays/ -f ${file} --file-mark $(basename ${file}):type=yaml-plain ${args} > ${file}.tmp
-    k8s-tag-resolver ${file}.tmp -o ${file}.tmp.resolved
-    mv ${file}.tmp.resolved ${file}
+    mv ${file}.tmp ${file}
+
+    # resolve tags to digests
+    k8s-tag-resolver ${file} -o ${file}.tmp
+    mv ${file}.tmp ${file}
   done < "${chart_dir}/templates.yaml"
 fi
 
