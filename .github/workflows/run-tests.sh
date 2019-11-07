@@ -20,7 +20,7 @@ for test in java java-boot node npm command; do
     --git-repo https://github.com/$FATS_REPO --git-revision $FATS_REFSPEC --sub-path functions/uppercase/${test} &
 
   riff $RUNTIME deployer create $name --function-ref $name --namespace $NAMESPACE --tail
-  source $FATS_DIR/macros/invoke_$RUNTIME_deployer.sh $name "-H Content-Type:text/plain -H Accept:text/plain -d cli" CLI
+  source ${FATS_DIR}/macros/invoke_${RUNTIME}_deployer.sh $name "-H Content-Type:text/plain -H Accept:text/plain -d cli" CLI
   riff $RUNTIME deployer delete $name --namespace $NAMESPACE
 
   riff function delete $name --namespace $NAMESPACE
