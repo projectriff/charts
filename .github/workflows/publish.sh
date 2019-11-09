@@ -16,5 +16,10 @@ gsutil cp gs://projectriff/charts/snapshots/*-${slug}.tgz repository/
 for f in repository/*.tgz; do mv $f $(echo $f | sed s/${slug}/${version}/); done
 
 helm repo index repository/ --url https://projectriff.storage.googleapis.com/charts/releases --merge repository/index.yaml
+
+# publish charts
 gsutil -h 'Cache-Control: public, max-age=60' cp -a public-read repository/*.tgz gs://projectriff/charts/releases/
 gsutil -h 'Cache-Control: public, max-age=60' cp -a public-read repository/index.yaml gs://projectriff/charts/releases/
+
+# publish uncharts
+gsutil -h 'Cache-Control: public, max-age=60' cp -a public-read gs://projectriff/charts/uncharted/snapshots/${slug}/*.yaml gs://projectriff/charts/uncharted/${version}/

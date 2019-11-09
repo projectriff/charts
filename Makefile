@@ -4,20 +4,42 @@ export ISTIO_VERSION = 1.3.3
 .PHONY: package
 package: repository
 
-repository: charts/fetch-istio.sh charts/package.sh
+repository: charts/*.sh
 	mkdir -p repository
+	mkdir -p uncharted
+
+	./charts/package.sh cert-manager ${VERSION}
+	./charts/unpackage.sh cert-manager
+	
 	./charts/fetch-istio.sh istio $(ISTIO_VERSION)
-	./charts/package.sh cert-manager ${VERSION} repository
-	./charts/package.sh istio ${VERSION} repository
-	./charts/package.sh keda ${VERSION} repository
-	./charts/package.sh knative ${VERSION} repository
-	./charts/package.sh kpack ${VERSION} repository
-	./charts/package.sh riff-builders ${VERSION} repository
-	./charts/package.sh riff-build ${VERSION} repository
-	./charts/package.sh riff-core-runtime ${VERSION} repository
-	./charts/package.sh riff-knative-runtime ${VERSION} repository
-	./charts/package.sh riff-streaming-runtime ${VERSION} repository
-	./charts/package.sh riff ${VERSION} repository
+	./charts/package.sh istio ${VERSION}
+	helm template ./repository/istio-${VERSION}.tgz --namespace istio-system > uncharted/istio.yaml
+
+	./charts/package.sh keda ${VERSION}
+	./charts/unpackage.sh keda
+	
+	./charts/package.sh knative ${VERSION}
+	./charts/unpackage.sh knative
+	
+	./charts/package.sh kpack ${VERSION}
+	./charts/unpackage.sh kpack
+	
+	./charts/package.sh riff-builders ${VERSION}
+	./charts/unpackage.sh riff-builders
+	
+	./charts/package.sh riff-build ${VERSION}
+	./charts/unpackage.sh riff-build
+	
+	./charts/package.sh riff-core-runtime ${VERSION}
+	./charts/unpackage.sh riff-core-runtime
+	
+	./charts/package.sh riff-knative-runtime ${VERSION}
+	./charts/unpackage.sh riff-knative-runtime
+	
+	./charts/package.sh riff-streaming-runtime ${VERSION}
+	./charts/unpackage.sh riff-streaming-runtime
+	
+	./charts/package.sh riff ${VERSION}
 
 .PHONY: templates
 templates:
@@ -35,3 +57,4 @@ templates:
 clean:
 	rm -rf build
 	rm -rf repository
+	rm -rf uncharted
