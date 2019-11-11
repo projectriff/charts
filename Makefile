@@ -13,7 +13,7 @@ repository: charts/*.sh
 	
 	./charts/fetch-istio.sh istio $(ISTIO_VERSION)
 	./charts/package.sh istio ${VERSION}
-	helm template ./repository/istio-${VERSION}.tgz --namespace istio-system > uncharted/istio.yaml
+	./charts/unpackage.sh istio
 
 	./charts/package.sh keda ${VERSION}
 	./charts/unpackage.sh keda
