@@ -26,10 +26,6 @@ if [ -f ${chart_dir}/templates.yaml ] ; then
     echo "---" >> ${file}
     curl -L -s ${url} >> ${file}
 
-    # apply ytt overlays
-    ytt -f ${file} --file-mark $(basename ${file}):type=yaml-plain ${args} > ${file}.tmp
-    mv ${file}.tmp ${file}
-
     # resolve tags to digests
     k8s-tag-resolver ${file} -o ${file}.tmp
     mv ${file}.tmp ${file}
