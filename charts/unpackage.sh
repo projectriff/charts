@@ -32,7 +32,7 @@ if [ $chart == "istio" ] ; then
 fi
 
 if [ -f ${chart_dir}/uncharted.patch ] ; then
-	patch ${file} ${chart_dir}/uncharted.patch
+  patch ${file} ${chart_dir}/uncharted.patch
 fi
 
 # resolve tags to digests
