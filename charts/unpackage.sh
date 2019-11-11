@@ -35,6 +35,11 @@ if [ -f ${chart_dir}/uncharted.patch ] ; then
   patch ${file} ${chart_dir}/uncharted.patch
 fi
 
+if [ -d ${chart_dir}/overlays-uncharted ] ; then
+  ytt -f ${chart_dir}/overlays-uncharted/ -f ${file} --file-mark $(basename ${file}):type=yaml-plain --ignore-unknown-comments > ${file}.tmp
+  mv ${file}.tmp ${file}
+fi
+
 # resolve tags to digests
 k8s-tag-resolver ${file} -o ${file}.tmp
 mv ${file}.tmp ${file}
