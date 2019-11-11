@@ -27,7 +27,7 @@ if [ -f ${chart_dir}/templates.yaml ] ; then
     curl -L -s ${url} >> ${file}
 
     # apply ytt overlays
-    ytt -f overlays/*.yaml -f ${file} --file-mark $(basename ${file}):type=yaml-plain ${args} > ${file}.tmp
+    ytt -f overlays/ -f ${file} --file-mark $(basename ${file}):type=yaml-plain ${args} > ${file}.tmp
     mv ${file}.tmp ${file}
 
     # resolve tags to digests
