@@ -13,7 +13,7 @@ source $FATS_DIR/.configure.sh
 
 if [ ${1:-unknown} = staged ] ; then
   echo "Using staged uncharts"
-  unchart_base=https://storage.googleapis.com/projectriff/charts/uncharts/snapshots/${slug}
+  unchart_base=https://storage.googleapis.com/projectriff/charts/uncharted/snapshots/${slug}
 else
   echo "Using locally built uncharts"
   unchart_base=./uncharted
