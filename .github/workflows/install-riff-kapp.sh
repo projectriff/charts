@@ -32,7 +32,7 @@ install_app() {
 
 # TODO if this works, move it into the FATS GKE start.sh script
 kubectl wait apiservices --for=condition=Available --all --timeout=120s
-kubectl wait deployments --for=condition=Available --all --all-namespaces --timeout=120s
+kubectl wait pods --for=condition=Ready --all --all-namespaces --timeout=120s
 
 echo "Install Cert Manager"
 install_app cert-manager
