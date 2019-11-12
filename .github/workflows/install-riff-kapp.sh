@@ -32,7 +32,7 @@ install_app() {
 
 # TODO if this works, move it into the FATS GKE start.sh script
 echo "check pods to be ready"
-kubectl wait pods --for=condition=Ready --all --namespace kube-system --timeout=120s
+kubectl wait pods --for=condition=Ready --all --namespace kube-system --timeout=300s
 echo "check apiservices to be available"
 kubectl wait apiservices --for=condition=Available --all --timeout=120s
 
