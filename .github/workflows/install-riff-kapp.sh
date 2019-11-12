@@ -23,7 +23,7 @@ install_app() {
   local name=$1
   local transform=${2:-}
 
-  if [ -z $transforms ] ; then
+  if [ -z $transform ] ; then
     kapp deploy -a $name -f ${unchart_base}/${name}.yaml -y
   else
     ytt -f ${unchart_base}/${name}.yaml -f $transform --file-mark ${name}.yaml:type=yaml-plain | kapp deploy -a $name -f - -y
