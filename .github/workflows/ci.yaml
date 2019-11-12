@@ -21,12 +21,26 @@ jobs:
       matrix:
         config:
         - os: ubuntu-latest
-          qualifier: core
+          installer: helm
+          qualifier: core-helm
           cluster: kind
           registry: docker-daemon
           runtime: core
         - os: ubuntu-latest
-          qualifier: knative
+          installer: kapp
+          qualifier: core-kapp
+          cluster: kind
+          registry: docker-daemon
+          runtime: core
+        - os: ubuntu-latest
+          installer: helm
+          qualifier: knative-helm
+          cluster: kind
+          registry: docker-daemon
+          runtime: knative
+        - os: ubuntu-latest
+          installer: kapp
+          qualifier: knative-kapp
           cluster: kind
           registry: docker-daemon
           runtime: knative
@@ -53,6 +67,7 @@ jobs:
         $FATS_DIR/install.sh riff
         $FATS_DIR/install.sh helm
         $FATS_DIR/install.sh ytt 0.14.0
+        $FATS_DIR/install.sh kapp 0.14.0
         $FATS_DIR/install.sh k8s-tag-resolver
         sudo snap install yq
     - name: Package charts
@@ -62,7 +77,7 @@ jobs:
     - name: Start FATS
       run: $FATS_DIR/start.sh
     - name: Install riff
-      run: ./.github/workflows/install-riff.sh unstaged
+      run: ./.github/workflows/install-riff-${{ matrix.config.installer }}.sh unstaged
     - name: Run tests
       run: ./.github/workflows/run-tests.sh
       timeout-minutes: 30
@@ -71,7 +86,7 @@ jobs:
       if: always()
       timeout-minutes: 1
     - name: Uninstall riff
-      run: ./.github/workflows/cleanup-riff.sh
+      run: ./.github/workflows/cleanup-riff-${{ matrix.config.installer }}.sh
       if: always()
       timeout-minutes: 10
     - name: Cleanup FATS
@@ -110,12 +125,26 @@ jobs:
       matrix:
         config:
         - os: ubuntu-latest
-          qualifier: core
+          installer: helm
+          qualifier: core-helm
           cluster: kind
           registry: dockerhub
           runtime: core
         - os: ubuntu-latest
-          qualifier: knative
+          installer: kapp
+          qualifier: core-kapp
+          cluster: kind
+          registry: dockerhub
+          runtime: core
+        - os: ubuntu-latest
+          installer: helm
+          qualifier: knative-helm
+          cluster: gke
+          registry: gcr
+          runtime: knative
+        - os: ubuntu-latest
+          installer: kapp
+          qualifier: knative-kapp
           cluster: gke
           registry: gcr
           runtime: knative
@@ -144,11 +173,12 @@ jobs:
         $FATS_DIR/install.sh kubectl
         $FATS_DIR/install.sh riff
         $FATS_DIR/install.sh helm
+        $FATS_DIR/install.sh kapp 0.14.0
         $FATS_DIR/install.sh gcloud
     - name: Start FATS
       run: $FATS_DIR/start.sh
     - name: Install riff
-      run: ./.github/workflows/install-riff.sh staged
+      run: ./.github/workflows/install-riff-${{ matrix.config.installer }}.sh staged
     - name: Run tests
       run: ./.github/workflows/run-tests.sh
       timeout-minutes: 30
@@ -157,7 +187,7 @@ jobs:
       if: always()
       timeout-minutes: 1
     - name: Uninstall riff
-      run: ./.github/workflows/cleanup-riff.sh
+      run: ./.github/workflows/cleanup-riff-${{ matrix.config.installer }}.sh
       if: always()
       timeout-minutes: 10
     - name: Cleanup FATS
