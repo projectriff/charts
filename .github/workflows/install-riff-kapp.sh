@@ -24,11 +24,13 @@ install_app() {
   local transform=${2:-}
 
   if [ -z $transform ] ; then
-    kapp deploy -a $name -f ${unchart_base}/${name}.yaml -y
+    kapp deploy -n apps -a $name -f ${unchart_base}/${name}.yaml -y
   else
-    ytt -f ${unchart_base}/${name}.yaml -f $transform --file-mark ${name}.yaml:type=yaml-plain | kapp deploy -a $name -f - -y
+    ytt -f ${unchart_base}/${name}.yaml -f $transform --file-mark ${name}.yaml:type=yaml-plain | kapp deploy -n apps -a $name -f - -y
   fi
 }
+
+kubectl create ns apps
 
 echo "Install Cert Manager"
 install_app cert-manager

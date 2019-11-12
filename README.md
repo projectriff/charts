@@ -19,47 +19,49 @@ Helm charts (and uncharts) to install Istio and riff.
 
    ```sh
    riff_version=0.5.0-snapshot
+
+   kubectl create ns apps
    ```
 
 1. Install riff Build (and dependencies)
    
    ```sh
-   kapp deploy -a cert-manager -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/cert-manager.yaml
-   kapp deploy -a kpack -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/kpack.yaml
-   kapp deploy -a riff-builders -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-builders.yaml
-   kapp deploy -a riff-build -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-build.yaml
+   kapp deploy -n apps -a cert-manager -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/cert-manager.yaml
+   kapp deploy -n apps -a kpack -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/kpack.yaml
+   kapp deploy -n apps -a riff-builders -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-builders.yaml
+   kapp deploy -n apps -a riff-build -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-build.yaml
    ```
 
 1. Optionally Install Istio (required for the Knative runtime)
    
    ```sh
-   kapp deploy -a istio -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/istio.yaml
+   kapp deploy -n apps -a istio -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/istio.yaml
    ```
    
    If your cluster does not support LoadBalancer services (most hosted clusters do, and local clusters do not), then you'll need to convert the ingress service to a NodePort.
    
    ```sh
-   ytt -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/istio.yaml -f https://storage.googleapis.com/projectriff/charts/overlays/service-nodeport.yaml --file-mark istio.yaml:type=yaml-plain | kapp deploy -a istio -f -
+   ytt -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/istio.yaml -f https://storage.googleapis.com/projectriff/charts/overlays/service-nodeport.yaml --file-mark istio.yaml:type=yaml-plain | kapp deploy -n apps -a istio -f -
    ```
 
 1. Optionally Install riff Core Runtime
    
    ```sh
-   kapp deploy -a riff-core-runtime -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-core-runtime.yaml
+   kapp deploy -n apps -a riff-core-runtime -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-core-runtime.yaml
    ```
 
 1. Optionally Install riff Knative Runtime (and dependencies)
    
    ```sh
-   kapp deploy -a knative -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/knative.yaml
-   kapp deploy -a riff-knative-runtime -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-knative-runtime.yaml
+   kapp deploy -n apps -a knative -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/knative.yaml
+   kapp deploy -n apps -a riff-knative-runtime -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-knative-runtime.yaml
    ```
 
 1. Optionally Install riff Streaming Runtime (and dependencies)
    
    ```sh
-   kapp deploy -a keda -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/keda.yaml
-   kapp deploy -a riff-streaming-runtime -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-streaming-runtime.yaml
+   kapp deploy -n apps -a keda -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/keda.yaml
+   kapp deploy -n apps -a riff-streaming-runtime -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-streaming-runtime.yaml
    ```
 
 1. Enjoy.
@@ -71,26 +73,26 @@ Helm charts (and uncharts) to install Istio and riff.
 kubectl delete riff --all-namespaces --all
 
 # remove riff Streaming Runtime (if installed)
-kapp delete -a riff-streaming-runtime
-kapp delete -a keda
+kapp delete -n apps -a riff-streaming-runtime
+kapp delete -n apps -a keda
 
 # remove riff Knative Runtime (if installed)
 kubectl delete knative --all-namespaces --all
-kapp delete -a riff-knative-runtime
-kapp delete -a knative
+kapp delete -n apps -a riff-knative-runtime
+kapp delete -n apps -a knative
 
 # remove riff Core Runtime (if installed)
-kapp delete -a riff-core-runtime
+kapp delete -n apps -a riff-core-runtime
 
 # remove Istio (if installed)
-kapp delete -a istio
+kapp delete -n apps -a istio
 kubectl get customresourcedefinitions.apiextensions.k8s.io -oname | grep istio.io | xargs -L1 kubectl delete
 
 # remove riff Build
-kapp delete -a riff-build
-kapp delete -a riff-builders
-kapp delete -a kpack
-kapp delete -a cert-manager
+kapp delete -n apps -a riff-build
+kapp delete -n apps -a riff-builders
+kapp delete -n apps -a kpack
+kapp delete -n apps -a cert-manager
 ```
 
 ## Install (helm)

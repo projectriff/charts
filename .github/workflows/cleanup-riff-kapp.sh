@@ -3,7 +3,7 @@
 uninstall_app() {
   local name=$1
 
-  kapp delete -a $name -y
+  kapp delete -n apps -a $name -y
 }
 
 source $FATS_DIR/macros/cleanup-user-resources.sh
