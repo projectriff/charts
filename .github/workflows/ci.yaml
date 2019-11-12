@@ -20,27 +20,27 @@ jobs:
     strategy:
       matrix:
         config:
-        - os: ubuntu-latest
+        - qualifier: core-helm
+          os: ubuntu-latest
           installer: helm
-          qualifier: core-helm
           cluster: kind
           registry: docker-daemon
           runtime: core
-        - os: ubuntu-latest
+        - qualifier: core-kapp
+          os: ubuntu-latest
           installer: kapp
-          qualifier: core-kapp
           cluster: kind
           registry: docker-daemon
           runtime: core
-        - os: ubuntu-latest
+        - qualifier: knative-helm
+          os: ubuntu-latest
           installer: helm
-          qualifier: knative-helm
           cluster: kind
           registry: docker-daemon
           runtime: knative
-        - os: ubuntu-latest
+        - qualifier: knative-kapp
+          os: ubuntu-latest
           installer: kapp
-          qualifier: knative-kapp
           cluster: kind
           registry: docker-daemon
           runtime: knative
@@ -124,27 +124,27 @@ jobs:
     strategy:
       matrix:
         config:
-        - os: ubuntu-latest
+        - qualifier: core-helm
+          os: ubuntu-latest
           installer: helm
-          qualifier: core-helm
           cluster: kind
           registry: dockerhub
           runtime: core
-        - os: ubuntu-latest
+        - qualifier: core-kapp
+          os: ubuntu-latest
           installer: kapp
-          qualifier: core-kapp
           cluster: kind
           registry: dockerhub
           runtime: core
-        - os: ubuntu-latest
+        - qualifier: knative-helm
+          os: ubuntu-latest
           installer: helm
-          qualifier: knative-helm
           cluster: gke
           registry: gcr
           runtime: knative
-        - os: ubuntu-latest
+        - qualifier: knative-kapp
+          os: ubuntu-latest
           installer: kapp
-          qualifier: knative-kapp
           cluster: gke
           registry: gcr
           runtime: knative
