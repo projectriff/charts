@@ -173,6 +173,7 @@ jobs:
         $FATS_DIR/install.sh kubectl
         $FATS_DIR/install.sh riff
         $FATS_DIR/install.sh helm
+        $FATS_DIR/install.sh ytt 0.14.0
         $FATS_DIR/install.sh kapp 0.14.0
         $FATS_DIR/install.sh gcloud
     - name: Start FATS
