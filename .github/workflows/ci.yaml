@@ -79,7 +79,7 @@ jobs:
       timeout-minutes: 15
     - name: Install riff
       run: ./.github/workflows/install-riff-${{ matrix.config.installer }}.sh unstaged
-      timeout-minutes: 10
+      timeout-minutes: 15
     - name: Run tests
       run: ./.github/workflows/run-tests.sh
       timeout-minutes: 30
@@ -183,7 +183,7 @@ jobs:
       timeout-minutes: 15
     - name: Install riff
       run: ./.github/workflows/install-riff-${{ matrix.config.installer }}.sh staged
-      timeout-minutes: 10
+      timeout-minutes: 15
     - name: Run tests
       run: ./.github/workflows/run-tests.sh
       timeout-minutes: 30
