@@ -10,7 +10,7 @@ on:
 env:
   FATS_DIR: fats
   FATS_REPO: projectriff/fats
-  FATS_REFSPEC: 3a04f9584db0071869b680ccd55d720214868d38 # master as of 2019-11-12
+  FATS_REFSPEC: a777380fc8e698e3c40a487f664122d959eaaa2f # master as of 2019-11-13
 
 jobs:
 
@@ -66,8 +66,8 @@ jobs:
         $FATS_DIR/install.sh kubectl
         $FATS_DIR/install.sh riff
         $FATS_DIR/install.sh helm
-        $FATS_DIR/install.sh ytt 0.14.0
-        $FATS_DIR/install.sh kapp 0.14.0
+        $FATS_DIR/install.sh ytt
+        $FATS_DIR/install.sh kapp
         $FATS_DIR/install.sh k8s-tag-resolver
         sudo snap install yq
     - name: Package charts
@@ -111,7 +111,7 @@ jobs:
       run: |
         $FATS_DIR/install.sh helm
         $FATS_DIR/install.sh gcloud
-        $FATS_DIR/install.sh ytt 0.14.0
+        $FATS_DIR/install.sh ytt
         $FATS_DIR/install.sh k8s-tag-resolver
         sudo snap install yq
       env:
@@ -175,8 +175,8 @@ jobs:
         $FATS_DIR/install.sh kubectl
         $FATS_DIR/install.sh riff
         $FATS_DIR/install.sh helm
-        $FATS_DIR/install.sh ytt 0.14.0
-        $FATS_DIR/install.sh kapp 0.14.0
+        $FATS_DIR/install.sh ytt
+        $FATS_DIR/install.sh kapp
         $FATS_DIR/install.sh gcloud
     - name: Start FATS
       run: $FATS_DIR/start.sh
