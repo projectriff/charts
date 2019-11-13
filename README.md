@@ -34,11 +34,13 @@ Helm charts (and uncharts) to install Istio and riff.
 
 1. Optionally Install Istio (required for the Knative runtime)
    
+   If your cluster supports LoadBalancer services (most managed clusters do, but local clusters typically do not):
+
    ```sh
    kapp deploy -n apps -a istio -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/istio.yaml
    ```
    
-   If your cluster does not support LoadBalancer services (most hosted clusters do, and local clusters do not), then you'll need to convert the ingress service to a NodePort.
+   If your cluster does not support LoadBalancer services, or if the above command stalls waiting for the ingress service to become ready, then you'll need to convert the ingress service to a NodePort:
    
    ```sh
    ytt -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/istio.yaml -f https://storage.googleapis.com/projectriff/charts/overlays/service-nodeport.yaml --file-mark istio.yaml:type=yaml-plain | kapp deploy -n apps -a istio -f -
