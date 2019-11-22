@@ -10,7 +10,7 @@ on:
 env:
   FATS_DIR: fats
   FATS_REPO: projectriff/fats
-  FATS_REFSPEC: 7bb452f1bf00ab9a9617aee7239704604c967768 # master as of 2019-11-21
+  FATS_REFSPEC: b10e06684d38ce450cb718b9af94b568f8319a06 # master as of 2019-11-21
 
 jobs:
 
@@ -79,7 +79,6 @@ jobs:
       timeout-minutes: 15
     - name: Install riff
       run: ./.github/workflows/install-riff-${{ matrix.config.installer }}.sh unstaged
-      shell: bash
       timeout-minutes: 15
     - name: Run tests
       run: ./.github/workflows/run-tests.sh
