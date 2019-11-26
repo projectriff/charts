@@ -30,6 +30,12 @@ fi
 if [ $chart == "istio" ] ; then
   helm template ./repository/istio-*.tgz --namespace istio-system > ${file}
 fi
+if [ $chart == "kafka" ] ; then
+  helm template ./repository/kafka-*.tgz --namespace kafka > ${file}
+
+  cat ${file} | sed -e 's/release-name-//g' | sed -e 's/release-name/riff/g' > ${file}.tmp
+  mv ${file}.tmp ${file}
+fi
 
 if [ -f ${chart_dir}/uncharted.patch ] ; then
   patch ${file} ${chart_dir}/uncharted.patch

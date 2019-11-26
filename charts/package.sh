@@ -54,7 +54,7 @@ fi
 
 # Resolve any image tags to digests in our values.yaml
 if [ -f ${build_dir}/values.yaml ] ; then
-    k8s-tag-resolver ${build_dir}/values.yaml -o ${build_dir}/values.yaml.tmp
+    k8s-tag-resolver ${build_dir}/values.yaml -o ${build_dir}/values.yaml.tmp || cp ${build_dir}/values.yaml ${build_dir}/values.yaml.tmp
     mv ${build_dir}/values.yaml.tmp ${build_dir}/values.yaml
 fi
 

@@ -10,11 +10,15 @@ repository: charts/*.sh
 
 	./charts/package.sh cert-manager ${VERSION}
 	./charts/unpackage.sh cert-manager
-	
+
 	./charts/fetch-istio.sh istio $(ISTIO_VERSION)
 	./charts/package.sh istio ${VERSION}
 	./charts/unpackage.sh istio
 
+	./charts/fetch-kafka.sh kafka 0.20.5
+	./charts/package.sh kafka ${VERSION}
+	./charts/unpackage.sh kafka
+	
 	./charts/package.sh keda ${VERSION}
 	./charts/unpackage.sh keda
 	
