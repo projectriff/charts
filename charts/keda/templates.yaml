@@ -1,9 +1,9 @@
 namespace: https://storage.googleapis.com/projectriff/charts/extras/keda/keda-namespace.yaml
-crd-scaledobject: https://github.com/kedacore/keda/raw/v1.0.0/deploy/crds/keda.k8s.io_scaledobjects_crd.yaml
-crd-triggerauthentications: https://github.com/kedacore/keda/raw/v1.0.0/deploy/crds/keda.k8s.io_triggerauthentications_crd.yaml
-api-service: https://github.com/kedacore/keda/raw/v1.0.0/deploy/api_service.yaml
-operator: https://github.com/kedacore/keda/raw/v1.0.0/deploy/operator.yaml
-role: https://github.com/kedacore/keda/raw/v1.0.0/deploy/role.yaml
-role-binding: https://github.com/kedacore/keda/raw/v1.0.0/deploy/role_binding.yaml
-service: https://github.com/kedacore/keda/raw/v1.0.0/deploy/service.yaml
-service-account: https://github.com/kedacore/keda/raw/v1.0.0/deploy/service_account.yaml
+crd-scaledobject: https://github.com/kedacore/keda/raw/a2acb0dfbc67ca007bef976573698e7f0a31764d/deploy/crds/keda.k8s.io_scaledobjects_crd.yaml
+crd-triggerauthentications: https://github.com/kedacore/keda/raw/a2acb0dfbc67ca007bef976573698e7f0a31764d/deploy/crds/keda.k8s.io_triggerauthentications_crd.yaml
+api-service: https://github.com/kedacore/keda/raw/a2acb0dfbc67ca007bef976573698e7f0a31764d/deploy/api_service.yaml
+operator: https://github.com/kedacore/keda/raw/a2acb0dfbc67ca007bef976573698e7f0a31764d/deploy/operator.yaml
+role: https://github.com/kedacore/keda/raw/a2acb0dfbc67ca007bef976573698e7f0a31764d/deploy/role.yaml
+role-binding: https://github.com/kedacore/keda/raw/a2acb0dfbc67ca007bef976573698e7f0a31764d/deploy/role_binding.yaml
+service: https://github.com/kedacore/keda/raw/a2acb0dfbc67ca007bef976573698e7f0a31764d/deploy/service.yaml
+service-account: https://github.com/kedacore/keda/raw/a2acb0dfbc67ca007bef976573698e7f0a31764d/deploy/service_account.yaml
