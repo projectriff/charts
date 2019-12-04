@@ -27,8 +27,8 @@ if [ -f ${chart_dir}/templates.yaml ] ; then
   done < "${chart_dir}/templates.yaml"
 fi
 
-if [ $chart == "istio" ] ; then
-  helm template ./repository/istio-*.tgz --namespace istio-system > ${file}
+if [ $chart == "istio" ] || [ $chart == "istio-init" ] ; then
+  helm template ./repository/${chart}-*.tgz --namespace istio-system > ${file}
 fi
 if [ $chart == "kafka" ] ; then
   helm template ./repository/kafka-*.tgz --namespace kafka > ${file}

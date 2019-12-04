@@ -15,6 +15,8 @@ global:
   defaultPodDisruptionBudget:
     enabled: false
   useMCP: false
+  k8sIngress:
+    enabled: true
 
   # This is noop until this merges https://github.com/istio/istio/pull/18642
   # and is backported to a release riff is using

@@ -14,11 +14,13 @@ source $FATS_DIR/.configure.sh
 if [ ${1:-unknown} = staged ] ; then
   echo "Using staged charts"
   certmanager_chart=https://storage.googleapis.com/projectriff/charts/snapshots/cert-manager-${slug}.tgz
+  istio_init_chart=https://storage.googleapis.com/projectriff/charts/snapshots/istio-init-${slug}.tgz
   istio_chart=https://storage.googleapis.com/projectriff/charts/snapshots/istio-${slug}.tgz
   riff_chart=https://storage.googleapis.com/projectriff/charts/snapshots/riff-${slug}.tgz
 else
   echo "Using locally built charts"
   certmanager_chart=./repository/cert-manager-${version}.tgz
+  istio_init_chart=./repository/istio-init-${version}.tgz
   istio_chart=./repository/istio-${version}.tgz
   riff_chart=./repository/riff-${version}.tgz
 fi
@@ -35,6 +37,8 @@ source $FATS_DIR/macros/no-resource-requests.sh
 
 if [ $RUNTIME = "knative" ]; then
   echo "Install Istio"
+  helm install ${istio_init_chart} --name istio-init --namespace istio-system --wait
+  kubectl -n istio-system wait --for=condition=complete job --all
   helm install ${istio_chart} --name istio --namespace istio-system --wait --set gateways.istio-ingressgateway.type=${K8S_SERVICE_TYPE}
 
   echo "Checking for ready ingress"

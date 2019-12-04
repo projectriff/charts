@@ -20,6 +20,7 @@ if [ $RUNTIME = "knative" ]; then
 
   echo "Uninstall Istio"
   uninstall_app istio
+  uninstall_app istio-init
   # extra cleanup for Istio
   kubectl get customresourcedefinitions.apiextensions.k8s.io -oname | grep istio.io | xargs -L1 kubectl delete
 fi

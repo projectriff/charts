@@ -37,6 +37,7 @@ Helm charts (and uncharts) to install Istio and riff.
    If your cluster supports LoadBalancer services (most managed clusters do, but local clusters typically do not):
 
    ```sh
+   kapp deploy -n apps -a istio-init -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/istio-init.yaml
    kapp deploy -n apps -a istio -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/istio.yaml
    ```
    
@@ -88,6 +89,7 @@ kapp delete -n apps -a riff-core-runtime
 
 # remove Istio (if installed)
 kapp delete -n apps -a istio
+kapp delete -n apps -a istio-init
 kubectl get customresourcedefinitions.apiextensions.k8s.io -oname | grep istio.io | xargs -L1 kubectl delete
 
 # remove riff Build
@@ -120,6 +122,22 @@ kapp delete -n apps -a cert-manager
    ```sh
    helm repo add projectriff https://projectriff.storage.googleapis.com/charts/releases
    helm repo update
+   ```
+
+1. Install Istio Init (optional, required for the Knative runtime)
+
+   Append:
+
+   - `--devel` for the latest snapshot.
+   
+   ```sh
+   helm install projectriff/istio-init --name istio --namespace istio-system --wait
+   ```
+
+   and then wait for Istio to initialize:
+
+   ```sh
+   kubectl -n istio-system wait --for=condition=complete job --all
    ```
 
 1. Install Istio (optional, required for the Knative runtime)
@@ -167,6 +185,7 @@ kubectl delete customresourcedefinitions.apiextensions.k8s.io -l app.kubernetes.
 
 # remove istio (if installed)
 helm delete --purge istio
+helm delete --purge istio-init
 kubectl delete namespace istio-system
 kubectl get customresourcedefinitions.apiextensions.k8s.io -oname | grep istio.io | xargs -L1 kubectl delete
 ```

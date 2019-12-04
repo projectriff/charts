@@ -12,6 +12,7 @@ source $FATS_DIR/macros/cleanup-user-resources.sh
 if [ $RUNTIME = "knative" ]; then
   echo "Uninstall Istio"
   uninstall_chart istio
+  uninstall_chart istio-init
   # extra cleanup for Istio
   kubectl get customresourcedefinitions.apiextensions.k8s.io -oname | grep istio.io | xargs -L1 kubectl delete
   kubectl delete namespace istio-system

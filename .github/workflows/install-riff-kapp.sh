@@ -50,6 +50,7 @@ fi
 if [ $RUNTIME = "knative" ]; then
   echo "Install Istio"
   
+  install_app istio-init
   install_app istio .github/workflows/overlays/service-$(echo ${K8S_SERVICE_TYPE} | tr '[A-Z]' '[a-z]').yaml
 
   echo "Checking for ready ingress"

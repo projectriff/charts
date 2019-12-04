@@ -11,6 +11,10 @@ repository: charts/*.sh
 	./charts/package.sh cert-manager ${VERSION}
 	./charts/unpackage.sh cert-manager
 
+	./charts/fetch-istio.sh istio-init $(ISTIO_VERSION)
+	./charts/package.sh istio-init ${VERSION}
+	./charts/unpackage.sh istio-init
+
 	./charts/fetch-istio.sh istio $(ISTIO_VERSION)
 	./charts/package.sh istio ${VERSION}
 	./charts/unpackage.sh istio
