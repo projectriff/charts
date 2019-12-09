@@ -9,6 +9,7 @@ source $FATS_DIR/.configure.sh
 # setup namespace
 kubectl create namespace $NAMESPACE
 fats_create_push_credentials $NAMESPACE
+source ${FATS_DIR}/macros/create-riff-dev-pod.sh
 
 for test in java java-boot node npm command; do
   name=fats-cluster-uppercase-${test}
