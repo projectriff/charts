@@ -71,6 +71,12 @@ if [ -d ${chart_dir}/charts ] ; then
   cp -LR ${chart_dir}/charts/* ${build_dir}/charts/
 fi
 
+if [ $chart == "istio" ] ; then
+  # patch istio Gateway protocol in chart
+  cat ${build_dir}/charts/gateways/templates/preconfigured.yaml | sed -e 's/protocol: HTTP2/protocol: HTTP/g' > ${build_dir}/charts/gateways/templates/preconfigured.yaml.tmp
+  mv ${build_dir}/charts/gateways/templates/preconfigured.yaml.tmp ${build_dir}/charts/gateways/templates/preconfigured.yaml
+fi
+
 if [[ ${chart} == riff* ]] ; then
   helm package ${build_dir} --destination repository --version ${version} --app-version ${version}
 else
