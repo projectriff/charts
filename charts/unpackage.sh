@@ -30,6 +30,9 @@ fi
 if [ $chart == "istio" ] ; then
   helm template ./repository/istio-*.tgz --namespace istio-system > ${file}
 fi
+if [ $chart == "riff-core-istio" ] ; then
+  helm template ./repository/riff-core-istio-*.tgz > ${file}
+fi
 if [ $chart == "kafka" ] ; then
   helm template ./repository/kafka-*.tgz --namespace kafka > ${file}
 

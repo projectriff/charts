@@ -33,15 +33,22 @@ wait_pod_selector_ready app=webhook cert-manager
 
 source $FATS_DIR/macros/no-resource-requests.sh
 
-if [ $RUNTIME = "knative" ]; then
-  echo "Install Istio"
-  helm install ${istio_chart} --name istio --namespace istio-system --wait --set gateways.istio-ingressgateway.type=${K8S_SERVICE_TYPE}
+echo "Install Istio"
+helm install ${istio_chart} --name istio --namespace istio-system --wait --set gateways.istio-ingressgateway.type=${K8S_SERVICE_TYPE}
 
-  echo "Checking for ready ingress"
-  wait_for_ingress_ready 'istio-ingressgateway' 'istio-system'
+echo "Checking for ready ingress"
+wait_for_ingress_ready 'istio-ingressgateway' 'istio-system'
+
+riff_chart_flags=""
+if [ $RUNTIME = "core" ]; then
+  riff_chart_flags="--set riff.runtimes.core.istio.enabled=true"
+fi
+if [ $RUNTIME = "knative" ]; then
+  riff_chart_flags="--set knative.istio.enabled=true"
 fi
 
 echo "Install riff"
 helm install ${riff_chart} --name riff --wait \
   --set cert-manager.enabled=false \
+  ${riff_chart_flags} \
   --set tags.${RUNTIME}-runtime=true

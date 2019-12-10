@@ -25,6 +25,9 @@ repository: charts/*.sh
 	./charts/package.sh knative ${VERSION}
 	./charts/unpackage.sh knative
 	
+	./charts/package.sh knative-istio ${VERSION}
+	./charts/unpackage.sh knative-istio
+	
 	./charts/package.sh kpack ${VERSION}
 	./charts/unpackage.sh kpack
 	
@@ -36,6 +39,9 @@ repository: charts/*.sh
 	
 	./charts/package.sh riff-core-runtime ${VERSION}
 	./charts/unpackage.sh riff-core-runtime
+	
+	./charts/package.sh riff-core-istio ${VERSION}
+	./charts/unpackage.sh riff-core-istio
 	
 	./charts/package.sh riff-knative-runtime ${VERSION}
 	./charts/unpackage.sh riff-knative-runtime

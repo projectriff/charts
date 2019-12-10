@@ -71,6 +71,11 @@ if [ -d ${chart_dir}/charts ] ; then
   cp -LR ${chart_dir}/charts/* ${build_dir}/charts/
 fi
 
+if [ -d ${chart_dir}/templates ] ; then
+  mkdir -p ${build_dir}/templates
+  cp -LR ${chart_dir}/templates/* ${build_dir}/templates/
+fi
+
 if [[ ${chart} == riff* ]] ; then
   helm package ${build_dir} --destination repository --version ${version} --app-version ${version}
 else

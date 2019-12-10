@@ -6,6 +6,8 @@
 #  enabled: false
 #knative:
 #  enabled: false
+#  istio:
+#    enabled: false
 #kpack:
 #  enabled: true
 #riff:
@@ -16,6 +18,8 @@
 #  runtimes:
 #    core:
 #      enabled: false
+#      istio:
+#        enabled: false
 #    knative:
 #      enabled: false
 #    streaming:
@@ -25,3 +29,4 @@ tags:
   core-runtime: false
   knative-runtime: false
   streaming-runtime: false
+  istio: false

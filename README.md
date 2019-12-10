@@ -32,7 +32,7 @@ Helm charts (and uncharts) to install Istio and riff.
    kapp deploy -n apps -a riff-build -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-build.yaml
    ```
 
-1. Optionally Install Istio (required for the Knative runtime)
+1. Optionally Install Istio
    
    If your cluster supports LoadBalancer services (most managed clusters do, but local clusters typically do not):
 
@@ -52,12 +52,24 @@ Helm charts (and uncharts) to install Istio and riff.
    kapp deploy -n apps -a riff-core-runtime -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-core-runtime.yaml
    ```
 
+   1. Optionally Install Istio support for riff Core Runtime
+   
+      ```sh
+      kapp deploy -n apps -a riff-core-istio -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-core-istio.yaml
+      ```
+
 1. Optionally Install riff Knative Runtime (and dependencies)
    
    ```sh
    kapp deploy -n apps -a knative -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/knative.yaml
    kapp deploy -n apps -a riff-knative-runtime -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-knative-runtime.yaml
    ```
+
+   1. Optionally Install Istio support for riff Knative Runtime
+      
+      ```sh
+      kapp deploy -n apps -a knative-istio -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/knative-istio.yaml
+      ```
 
 1. Optionally Install riff Streaming Runtime (and dependencies)
    
@@ -81,9 +93,11 @@ kapp delete -n apps -a keda
 # remove riff Knative Runtime (if installed)
 kubectl delete knative --all-namespaces --all
 kapp delete -n apps -a riff-knative-runtime
+kapp delete -n apps -a knative-istio
 kapp delete -n apps -a knative
 
 # remove riff Core Runtime (if installed)
+kapp delete -n apps -a riff-core-istio
 kapp delete -n apps -a riff-core-runtime
 
 # remove Istio (if installed)
@@ -122,7 +136,7 @@ kapp delete -n apps -a cert-manager
    helm repo update
    ```
 
-1. Install Istio (optional, required for the Knative runtime)
+1. Install Istio (optional)
 
    Append:
 
@@ -140,7 +154,9 @@ kapp delete -n apps -a cert-manager
    Append:
 
    - `--set tags.core-runtime=true` to enable the Core runtime
+   - `--set riff.runtimes.core.istio.enabled=true` to use the Core runtime with Istio ingress (requires Istio and the Core runtime )
    - `--set tags.knative-runtime=true` to enable the Knative runtime
+   - `--set knative.istio.enabled=true` to use the Knative runtime with Istio ingress (requires Istio and the Knative runtime)
    - `--set tags.streaming-runtime=true` to enable the Streaming runtime
    - `--set cert-manager.enabled=false` if cert-manager is already installed
    - `--set knative.enabled=false` if Knative serving is already installed

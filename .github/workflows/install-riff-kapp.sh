@@ -42,20 +42,18 @@ install_app kpack
 install_app riff-builders
 install_app riff-build
 
+echo "Install Istio"
+install_app istio .github/workflows/overlays/service-$(echo ${K8S_SERVICE_TYPE} | tr '[A-Z]' '[a-z]').yaml
+
 if [ $RUNTIME = "core" ]; then
   echo "Install riff core runtime"
   install_app riff-core-runtime
+  install_app riff-core-istio
 fi
 
 if [ $RUNTIME = "knative" ]; then
-  echo "Install Istio"
-  
-  install_app istio .github/workflows/overlays/service-$(echo ${K8S_SERVICE_TYPE} | tr '[A-Z]' '[a-z]').yaml
-
-  echo "Checking for ready ingress"
-  wait_for_ingress_ready 'istio-ingressgateway' 'istio-system'
-
   echo "Install riff Knative runtime"
   install_app knative
+  install_app knative-istio
   install_app riff-knative-runtime
 fi

@@ -14,6 +14,8 @@ dependencies:
     condition: knative.enabled
     tags:
       - knative-runtime
+  - name: knative-istio
+    condition: knative.istio.enabled
   - name: kpack
     condition: kpack.enabled
     tags:
@@ -30,6 +32,8 @@ dependencies:
     condition: riff.runtimes.core.enabled
     tags:
       - core-runtime
+  - name: riff-core-istio
+    condition: riff.runtimes.core.istio.enabled
   - name: riff-knative-runtime
     condition: riff.runtimes.knative.enabled
     tags:
