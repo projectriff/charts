@@ -65,14 +65,14 @@ jobs:
       run: |
         helm init --client-only
         make clean package
-    - name: Start FATS
+    - name: Start
       run: $FATS_DIR/start.sh
       timeout-minutes: 15
     - name: Install riff
       run: ./.github/workflows/install-riff.sh unstaged
       timeout-minutes: 15
     - name: Run tests
-      run: ./.github/workflows/run-tests.sh
+      run: ./.github/workflows/acceptance.sh
       timeout-minutes: 30
     - name: Collect diagnostics
       run: $FATS_DIR/diagnostics.sh
@@ -82,7 +82,7 @@ jobs:
       run: ./.github/workflows/cleanup-riff.sh
       if: always()
       timeout-minutes: 10
-    - name: Cleanup FATS
+    - name: Cleanup
       run: $FATS_DIR/cleanup.sh
       if: always()
       timeout-minutes: 10
@@ -160,14 +160,14 @@ jobs:
         $FATS_DIR/install.sh ytt
         $FATS_DIR/install.sh kapp
         $FATS_DIR/install.sh gcloud
-    - name: Start FATS
+    - name: Start
       run: $FATS_DIR/start.sh
       timeout-minutes: 15
     - name: Install riff
       run: ./.github/workflows/install-riff.sh staged
       timeout-minutes: 15
     - name: Run tests
-      run: ./.github/workflows/run-tests.sh
+      run: ./.github/workflows/acceptance.sh
       timeout-minutes: 30
     - name: Collect diagnostics
       run: $FATS_DIR/diagnostics.sh
@@ -177,7 +177,7 @@ jobs:
       run: ./.github/workflows/cleanup-riff.sh
       if: always()
       timeout-minutes: 10
-    - name: Cleanup FATS
+    - name: Cleanup
       run: $FATS_DIR/cleanup.sh
       if: always()
       timeout-minutes: 10
