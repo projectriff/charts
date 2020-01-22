@@ -107,5 +107,5 @@ for test in java java-boot node npm command; do
 done
 
 if [ $RUNTIME = "streaming" ]; then
-  riff streaming kafka-gateway delete franz
+  riff streaming kafka-gateway delete franz --namespace $NAMESPACE
 fi
