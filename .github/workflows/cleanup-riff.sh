@@ -24,6 +24,15 @@ if [ $RUNTIME = "knative" ]; then
   kubectl get customresourcedefinitions.apiextensions.k8s.io -oname | grep istio.io | xargs -L1 kubectl delete
 fi
 
+if [ $RUNTIME = "streaming" ]; then
+  echo "Uninstall riff Streaming runtime"
+  uninstall_app riff-streaming-runtime
+  uninstall_app keda
+
+  echo "Uninstall Kafka"
+  uninstall_app kafka
+fi
+
 echo "Uninstall riff Build"
 uninstall_app riff-build
 uninstall_app riff-builders

@@ -59,3 +59,12 @@ if [ $RUNTIME = "knative" ]; then
   install_app knative
   install_app riff-knative-runtime
 fi
+
+if [ $RUNTIME = "streaming" ]; then
+  echo "Install riff Streaming runtime"
+  install_app keda
+  install_app riff-streaming-runtime
+
+  echo "Install Kafka"
+  install_app kafka
+fi

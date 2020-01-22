@@ -30,6 +30,11 @@ jobs:
           cluster: kind
           registry: docker-daemon
           runtime: knative
+        - qualifier: streaming
+          os: ubuntu-latest
+          cluster: kind
+          registry: docker-daemon
+          runtime: streaming
       fail-fast: false
     runs-on: ${{ matrix.config.os }}
     steps:
@@ -122,6 +127,11 @@ jobs:
           cluster: gke
           registry: gcr
           runtime: knative
+        - qualifier: streaming
+          os: ubuntu-latest
+          cluster: gke
+          registry: gcr
+          runtime: streaming
       fail-fast: false
     runs-on: ${{ matrix.config.os }}
     env:
