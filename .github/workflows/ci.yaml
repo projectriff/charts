@@ -30,11 +30,18 @@ jobs:
           cluster: kind
           registry: docker-daemon
           runtime: knative
-        - qualifier: streaming
+        - qualifier: streaming-inmemory
           os: ubuntu-latest
           cluster: kind
           registry: docker-daemon
           runtime: streaming
+          gateway: inmemory
+        - qualifier: streaming-kafka
+          os: ubuntu-latest
+          cluster: kind
+          registry: docker-daemon
+          runtime: streaming
+          gateway: kafka
       fail-fast: false
     runs-on: ${{ matrix.config.os }}
     steps:
@@ -49,6 +56,7 @@ jobs:
         echo "##[set-env name=CLUSTER_NAME]release-${job}-${{ matrix.config.qualifier }}"
         echo "##[set-env name=NAMESPACE]release-${job}-${{ matrix.config.qualifier }}"
         echo "##[set-env name=RUNTIME]${{ matrix.config.runtime }}"
+        echo "##[set-env name=GATEWAY]${{ matrix.config.gateway }}"
         echo "##[add-path]$(go env GOPATH)/bin"
     - name: Fetch FATS
       run: ./.github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
@@ -131,11 +139,18 @@ jobs:
           cluster: gke
           registry: gcr
           runtime: knative
-        - qualifier: streaming
+        - qualifier: streaming-inmemory
+          os: ubuntu-latest
+          cluster: kind
+          registry: dockerhub
+          runtime: streaming
+          gateway: inmemory
+        - qualifier: streaming-kafka
           os: ubuntu-latest
           cluster: gke
           registry: gcr
           runtime: streaming
+          gateway: kafka
       fail-fast: false
     runs-on: ${{ matrix.config.os }}
     env:
@@ -154,6 +169,7 @@ jobs:
         echo "##[set-env name=CLUSTER_NAME]release-${job}-${{ matrix.config.qualifier }}"
         echo "##[set-env name=NAMESPACE]release-${job}-${{ matrix.config.qualifier }}"
         echo "##[set-env name=RUNTIME]${{ matrix.config.runtime }}"
+        echo "##[set-env name=GATEWAY]${{ matrix.config.gateway }}"
     - name: Fetch FATS
       run: ./.github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
     - name: Install tools
