@@ -66,5 +66,5 @@ if [ $RUNTIME = "streaming" ]; then
   install_app riff-streaming-runtime
 
   echo "Install Kafka"
-  install_app kafka
+  install_app internal-only-kafka
 fi

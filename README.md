@@ -2,7 +2,7 @@
 
 # projectriff Release YAML
 
-Release YAML files for riff (includes cert-manager, Istio, Knative, KEDA, kpack and Kafka dependencies).
+Release YAML files for riff (includes cert-manager, Istio, Knative, KEDA, kpack and dependencies).
 
 ## Install (kapp)
 
