@@ -15,7 +15,8 @@ repository: source/*.sh
 	./source/package.sh istio ${VERSION}
 
 	./source/fetch-kafka.sh kafka $(KAFKA_VERSION)
-	./source/package.sh internal-only-kafka ${VERSION}
+	./source/package.sh kafka ${VERSION}
+	mv ./target/kafka.yaml ./target/internal-only-kafka.yaml
 	
 	./source/package.sh keda ${VERSION}
 	

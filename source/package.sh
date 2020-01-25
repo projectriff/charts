@@ -66,7 +66,7 @@ fi
 if [ $component == "istio" ] ; then
   helm package ${build_dir} --destination repository --version ${version}
 fi
-if [ $component == "internal-only-kafka" ] ; then
+if [ $component == "kafka" ] ; then
   helm package ${build_dir}/../kafka --destination repository --version ${version}
 fi
 
@@ -95,7 +95,7 @@ fi
 if [ $component == "istio" ] ; then
   helm template ./repository/istio-*.tgz --namespace istio-system > ${file}
 fi
-if [ $component == "internal-only-kafka" ] ; then
+if [ $component == "kafka" ] ; then
   helm template ./repository/kafka-*.tgz --namespace kafka > ${file}
 
   cat ${file} | sed -e 's/release-name-//g' | sed -e 's/release-name/riff/g' > ${file}.tmp
