@@ -20,7 +20,7 @@ if [ $RUNTIME = "streaming" ]; then
     riff streaming kafka-gateway create test --bootstrap-servers kafka.kafka.svc.cluster.local:9092 --namespace $NAMESPACE --tail
   fi
   if [ $GATEWAY = "pulsar" ]; then
-    riff streaming pulsar-gateway create test --bootstrap-servers pulsar://pulsar.pulsar.svc.cluster.local:6650 --namespace $NAMESPACE --tail
+    riff streaming pulsar-gateway create test --service-url pulsar://pulsar.pulsar.svc.cluster.local:6650 --namespace $NAMESPACE --tail
   fi
   echo "##[endgroup]"
 fi
