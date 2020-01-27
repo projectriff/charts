@@ -17,6 +17,9 @@ repository: source/*.sh
 	./source/fetch-kafka.sh kafka $(KAFKA_VERSION)
 	./source/package.sh kafka ${VERSION}
 	mv ./target/kafka.yaml ./target/internal-only-kafka.yaml
+
+	./source/package.sh pulsar ${VERSION}
+	mv ./target/pulsar.yaml ./target/internal-only-pulsar.yaml
 	
 	./source/package.sh keda ${VERSION}
 	
