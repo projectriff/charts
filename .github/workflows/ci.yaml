@@ -42,6 +42,12 @@ jobs:
           registry: docker-daemon
           runtime: streaming
           gateway: kafka
+        - qualifier: streaming-pulsar
+          os: ubuntu-latest
+          cluster: kind
+          registry: docker-daemon
+          runtime: streaming
+          gateway: pulsar
       fail-fast: false
     runs-on: ${{ matrix.config.os }}
     steps:
@@ -147,10 +153,16 @@ jobs:
           gateway: inmemory
         - qualifier: streaming-kafka
           os: ubuntu-latest
-          cluster: gke
-          registry: gcr
+          cluster: kind
+          registry: dockerhub
           runtime: streaming
           gateway: kafka
+        - qualifier: streaming-pulsar
+          os: ubuntu-latest
+          cluster: kind
+          registry: dockerhub
+          runtime: streaming
+          gateway: pulsar
       fail-fast: false
     runs-on: ${{ matrix.config.os }}
     env:

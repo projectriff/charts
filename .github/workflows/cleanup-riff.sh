@@ -33,6 +33,10 @@ if [ $RUNTIME = "streaming" ]; then
     echo "Uninstall Kafka"
     uninstall_app internal-only-kafka
   fi
+  if [ $GATEWAY = "pulsar" ]; then
+    echo "Uninstall Pulsar"
+    uninstall_app internal-only-pulsar
+  fi
 fi
 
 echo "Uninstall riff Build"

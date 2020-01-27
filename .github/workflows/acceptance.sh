@@ -19,6 +19,9 @@ if [ $RUNTIME = "streaming" ]; then
   if [ $GATEWAY = "kafka" ]; then
     riff streaming kafka-gateway create test --bootstrap-servers kafka.kafka.svc.cluster.local:9092 --namespace $NAMESPACE --tail
   fi
+  if [ $GATEWAY = "pulsar" ]; then
+    riff streaming pulsar-gateway create test --bootstrap-servers pulsar://pulsar.pulsar.svc.cluster.local:6650 --namespace $NAMESPACE --tail
+  fi
   echo "##[endgroup]"
 fi
 
@@ -112,10 +115,5 @@ for test in java java-boot node npm command; do
 done
 
 if [ $RUNTIME = "streaming" ]; then
-  if [ $GATEWAY = "inmemory" ]; then
-    riff streaming inmemory-gateway delete test --namespace $NAMESPACE
-  fi
-  if [ $GATEWAY = "kafka" ]; then
-    riff streaming kafka-gateway delete test --namespace $NAMESPACE
-  fi
+  riff streaming ${GATEWAY}-gateway delete test --namespace $NAMESPACE
 fi

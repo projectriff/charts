@@ -69,4 +69,8 @@ if [ $RUNTIME = "streaming" ]; then
     echo "Install Kafka"
     install_app internal-only-kafka
   fi
+  if [ $GATEWAY = "pulsar" ]; then
+    echo "Install Pulsar"
+    install_app internal-only-pulsar
+  fi
 fi
