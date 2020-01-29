@@ -1,1 +1,1 @@
-knative-net-contour: https://github.com/knative/serving/raw/v0.12.1/third_party/contour-latest/contour.yaml
+knative-net-contour: https://storage.googleapis.com/projectriff/charts/extras/mattmoor/net-contrib/net-contour-release-0.12.yaml
