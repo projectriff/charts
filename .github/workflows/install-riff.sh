@@ -37,6 +37,9 @@ install_app cert-manager
 
 source $FATS_DIR/macros/no-resource-requests.sh
 
+echo "Install Contour"
+install_app contour .github/workflows/overlays/service-$(echo ${K8S_SERVICE_TYPE} | tr '[A-Z]' '[a-z]').yaml
+
 echo "Install riff Build"
 install_app kpack
 install_app riff-builders
@@ -48,15 +51,9 @@ if [ $RUNTIME = "core" ]; then
 fi
 
 if [ $RUNTIME = "knative" ]; then
-  echo "Install Istio"
-  
-  install_app istio .github/workflows/overlays/service-$(echo ${K8S_SERVICE_TYPE} | tr '[A-Z]' '[a-z]').yaml
-
-  echo "Checking for ready ingress"
-  wait_for_ingress_ready 'istio-ingressgateway' 'istio-system'
-
   echo "Install riff Knative runtime"
   install_app knative
+  install_app knative-net-contour
   install_app riff-knative-runtime
 fi
 

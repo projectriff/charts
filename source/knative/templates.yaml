@@ -1,1 +1,2 @@
-knative-serving: https://storage.googleapis.com/knative-releases/serving/previous/v0.12.0/serving.yaml
+serving-core: https://storage.googleapis.com/knative-releases/serving/previous/v0.12.1/serving-core.yaml
+serving-hpa: https://storage.googleapis.com/knative-releases/serving/previous/v0.12.1/serving-hpa.yaml

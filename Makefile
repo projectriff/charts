@@ -14,6 +14,8 @@ repository: source/*.sh
 	./source/fetch-istio.sh istio $(ISTIO_VERSION)
 	./source/package.sh istio ${VERSION}
 
+	./source/package.sh contour ${VERSION}
+
 	./source/fetch-kafka.sh kafka $(KAFKA_VERSION)
 	./source/package.sh kafka ${VERSION}
 	mv ./target/kafka.yaml ./target/internal-only-kafka.yaml
@@ -24,6 +26,8 @@ repository: source/*.sh
 	./source/package.sh keda ${VERSION}
 	
 	./source/package.sh knative ${VERSION}
+	./source/package.sh knative-net-contour ${VERSION}
+	./source/package.sh knative-net-istio ${VERSION}
 	
 	./source/package.sh kpack ${VERSION}
 	

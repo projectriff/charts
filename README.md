@@ -41,18 +41,18 @@ Release YAML files for riff (includes cert-manager, Istio, Knative, KEDA, kpack 
    kapp deploy -n apps -a riff-build -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-build.yaml
    ```
 
-1. Optionally Install Istio (required for the Knative runtime)
+1. Install Contour (for core or knative runtimes)
    
    If your cluster supports LoadBalancer services (most managed clusters do, but local clusters typically do not):
 
    ```sh
-   kapp deploy -n apps -a istio -f https://storage.googleapis.com/projectriff/release/${riff_version}/istio.yaml
+   kapp deploy -n apps -a contour -f https://storage.googleapis.com/projectriff/release/${riff_version}/contour.yaml
    ```
    
    If your cluster does not support LoadBalancer services, or if the above command stalls waiting for the ingress service to become ready, then you'll need to convert the ingress service to a NodePort:
    
    ```sh
-   ytt -f https://storage.googleapis.com/projectriff/release/${riff_version}/istio.yaml -f https://storage.googleapis.com/projectriff/charts/overlays/service-nodeport.yaml --file-mark istio.yaml:type=yaml-plain | kapp deploy -n apps -a istio -f - -y
+   ytt -f https://storage.googleapis.com/projectriff/release/${riff_version}/contour.yaml -f https://storage.googleapis.com/projectriff/charts/overlays/service-nodeport.yaml --file-mark contour.yaml:type=yaml-plain | kapp deploy -n apps -a contour -f - -y
    ```
 
 1. Optionally Install riff Core Runtime
@@ -65,6 +65,10 @@ Release YAML files for riff (includes cert-manager, Istio, Knative, KEDA, kpack 
    
    ```sh
    kapp deploy -n apps -a knative -f https://storage.googleapis.com/projectriff/release/${riff_version}/knative.yaml
+   ```
+
+   ```sh
+   kapp deploy -n apps -a knative-net-contour -f https://storage.googleapis.com/projectriff/release/${riff_version}/knative-net-contour.yaml
    ```
 
    ```sh
@@ -115,19 +119,19 @@ Release YAML files for riff (includes cert-manager, Istio, Knative, KEDA, kpack 
    kapp delete -n apps -a knative
    ```
 
+   ```sh
+   kapp delete -n apps -a knative-net-contour
+   ```
+
 1. Remove riff Core Runtime (if installed)
    ```sh
    kapp delete -n apps -a riff-core-runtime
    ```
 
-1. Remove Istio (if installed)
+1. Remove Contour (if installed)
 
    ```sh
-   kapp delete -n apps -a istio
-   ```
-
-   ```sh
-   kubectl get customresourcedefinitions.apiextensions.k8s.io -oname | grep istio.io | xargs -L1 kubectl delete
+   kapp delete -n apps -a contour
    ```
 
 1. Remove riff Build
