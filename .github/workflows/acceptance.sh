@@ -73,9 +73,9 @@ for test in java java-boot node npm command; do
 
     riff streaming processor create $name --function-ref $name --namespace $NAMESPACE --input ${lower_stream} --output ${upper_stream} --tail
 
-    kubectl exec riff-dev -n $NAMESPACE -- subscribe ${upper_stream} -n $NAMESPACE | tee result.txt &
+    kubectl exec riff-dev -n $NAMESPACE -- subscribe ${upper_stream} --payload-encoding raw | tee result.txt &
     sleep 10
-    kubectl exec riff-dev -n $NAMESPACE -- publish ${lower_stream} -n $NAMESPACE --payload "system" --content-type "text/plain"
+    kubectl exec riff-dev -n $NAMESPACE -- publish ${lower_stream} --payload "system" --content-type "text/plain"
 
     actual_data=""
     expected_data="SYSTEM"
@@ -84,7 +84,7 @@ for test in java java-boot node npm command; do
       echo -n "."
       cnt=$((cnt+1))
 
-      actual_data=`cat result.txt | jq -r .payload | xargs -I {} sh -c 'echo {} | base64 --decode'`
+      actual_data=$(cat result.txt | jq -r .payload)
       if [ "$actual_data" == "$expected_data" ]; then
         break
       fi
