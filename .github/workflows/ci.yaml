@@ -60,6 +60,7 @@ jobs:
         $FATS_DIR/install.sh ytt
         $FATS_DIR/install.sh kapp
         $FATS_DIR/install.sh k8s-tag-resolver
+        sudo snap find yq
         sudo snap install yq
     - name: Package release
       run: |
