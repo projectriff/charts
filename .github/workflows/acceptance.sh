@@ -32,23 +32,7 @@ for test in java java-boot node npm command; do
   riff function create $name --image $image --namespace $NAMESPACE --tail \
     --git-repo https://github.com/$FATS_REPO --git-revision $FATS_REFSPEC --sub-path functions/uppercase/${test} &
 
-  if [ $RUNTIME = "core" ]; then
-    riff $RUNTIME deployer create $name \
-      --function-ref $name \
-      --ingress-policy External \
-      --namespace $NAMESPACE \
-      --tail
-
-    # TODO also test external ingress for core runtime
-    source ${FATS_DIR}/macros/invoke_incluster.sh \
-      "$(kubectl get deployers.${RUNTIME}.projectriff.io ${name} --namespace ${NAMESPACE} -ojsonpath='{.status.address.url}')" \
-      "${curl_opts}" \
-      "${expected_data}"
-
-    riff $RUNTIME deployer delete $name --namespace $NAMESPACE
-  fi
-
-  if [ $RUNTIME = "knative" ]; then
+  if [ $RUNTIME = "core" ] || [ $RUNTIME = "knative" ]; then
     riff $RUNTIME deployer create $name \
       --function-ref $name \
       --ingress-policy External \
