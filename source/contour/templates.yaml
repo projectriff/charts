@@ -1,1 +1,1 @@
-contour: https://storage.googleapis.com/projectriff/charts/extras/mattmoor/net-contrib/contour-release-0.12.yaml
+knative-contour: https://github.com/knative/serving/raw/v0.12.1/third_party/contour-latest/contour.yaml
