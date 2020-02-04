@@ -12,7 +12,7 @@ metadata:
     #@overlay/match missing_ok=True
     kapp.k14s.io/change-rule.0: "delete before deleting knative-deployment"
 
-#@overlay/match by=overlay.subset({"kind": "Deployment"}),expects="0+"
+#@overlay/match by=overlay.subset({"kind": "Deployment", "metadata": {"namespace": "knative-serving", "name": "autoscaler"}}),expects="0+"
 ---
 apiVersion: apps/v1
 metadata:
@@ -20,7 +20,7 @@ metadata:
   annotations:
     kapp.k14s.io/change-group: "knative-deployment"
 
-#@overlay/match by=overlay.subset({"kind": "Service"}),expects="0+"
+#@overlay/match by=overlay.subset({"kind": "Service", "metadata": {"namespace": "knative-serving", "name": "autoscaler"}}),expects="0+"
 ---
 metadata:
   #@overlay/match missing_ok=True

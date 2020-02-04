@@ -1,5 +1,4 @@
 VERSION ?= $(shell cat VERSION)
-export ISTIO_VERSION = 1.3.6
 export KAFKA_VERSION = 0.20.8
 
 .PHONY: package
@@ -10,9 +9,6 @@ repository: source/*.sh
 	mkdir -p target
 
 	./source/package.sh cert-manager ${VERSION}
-
-	./source/fetch-istio.sh istio $(ISTIO_VERSION)
-	./source/package.sh istio ${VERSION}
 
 	./source/package.sh contour ${VERSION}
 
@@ -26,8 +22,6 @@ repository: source/*.sh
 	./source/package.sh keda ${VERSION}
 	
 	./source/package.sh knative ${VERSION}
-	./source/package.sh knative-net-contour ${VERSION}
-	./source/package.sh knative-net-istio ${VERSION}
 	
 	./source/package.sh kpack ${VERSION}
 	

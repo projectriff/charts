@@ -16,7 +16,6 @@ fi
 if [ $RUNTIME = "knative" ]; then
   echo "Uninstall riff Knartive runtime"
   uninstall_app riff-knative-runtime
-  uninstall_app knative-net-contour
   uninstall_app knative
 fi
 

@@ -1,0 +1,12 @@
+#@ load("@ytt:overlay", "overlay")
+
+#! Remove resources in the knative-serving namespace, leaving only a contour install
+#! this should become unnecessary after https://github.com/knative/net-contour/issues/3
+
+#@overlay/match by=overlay.subset({ "metadata": { "namespace": "knative-serving" } }), expects="0+"
+#@overlay/remove
+---
+
+#@overlay/match by=overlay.subset({ "metadata": { "name": "knative-contour-core" } }), expects="0+"
+#@overlay/remove
+---

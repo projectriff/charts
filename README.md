@@ -68,10 +68,6 @@ Release YAML files for riff (includes cert-manager, Knative, KEDA, kpack, Contou
    ```
 
    ```sh
-   kapp deploy -n apps -a knative-net-contour -f https://storage.googleapis.com/projectriff/release/${riff_version}/knative-net-contour.yaml
-   ```
-
-   ```sh
    kapp deploy -n apps -a riff-knative-runtime -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-knative-runtime.yaml
    ```
 
@@ -117,10 +113,6 @@ Release YAML files for riff (includes cert-manager, Knative, KEDA, kpack, Contou
 
    ```sh
    kapp delete -n apps -a knative
-   ```
-
-   ```sh
-   kapp delete -n apps -a knative-net-contour
    ```
 
 1. Remove riff Core Runtime (if installed)

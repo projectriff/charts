@@ -53,7 +53,6 @@ fi
 if [ $RUNTIME = "knative" ]; then
   echo "Install riff Knative runtime"
   install_app knative
-  install_app knative-net-contour
   install_app riff-knative-runtime
 fi
 
