@@ -63,9 +63,6 @@ if [ -d ${source_dir}/charts ] ; then
   cp -LR ${source_dir}/charts/* ${build_dir}/charts/
 fi
 
-if [ $component == "istio" ] ; then
-  helm package ${build_dir} --destination repository --version ${version}
-fi
 if [ $component == "kafka" ] ; then
   helm package ${build_dir}/../kafka --destination repository --version ${version}
 fi
@@ -92,9 +89,6 @@ if [ -f ${source_dir}/templates.yaml ] ; then
   done < "${source_dir}/templates.yaml"
 fi
 
-if [ $component == "istio" ] ; then
-  helm template ./repository/istio-*.tgz --namespace istio-system > ${file}
-fi
 if [ $component == "kafka" ] ; then
   helm template ./repository/kafka-*.tgz --namespace kafka > ${file}
 
