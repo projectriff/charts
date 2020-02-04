@@ -54,7 +54,7 @@ for test in java java-boot node npm command; do
       "${expected_data}"
 
     # external invoke
-    source `dirname "${BASH_SOURCE[0]}"`/invoke_contour.sh \
+    source ${FATS_DIR}/macros/invoke_contour.sh \
       "$(kubectl get deployers.${RUNTIME}.projectriff.io ${name} --namespace ${NAMESPACE} -ojsonpath='{.status.url}')" \
       "${curl_opts}" \
       "${expected_data}"
