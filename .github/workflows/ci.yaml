@@ -42,13 +42,12 @@ jobs:
           registry: docker-daemon
           runtime: streaming
           gateway: kafka
-        # TODO restore pulsar tests
-        # - qualifier: streaming-pulsar
-        #   os: ubuntu-latest
-        #   cluster: kind
-        #   registry: docker-daemon
-        #   runtime: streaming
-        #   gateway: pulsar
+        - qualifier: streaming-pulsar
+          os: ubuntu-latest
+          cluster: kind
+          registry: docker-daemon
+          runtime: streaming
+          gateway: pulsar
       fail-fast: false
     runs-on: ${{ matrix.config.os }}
     steps:
@@ -158,13 +157,12 @@ jobs:
           registry: dockerhub
           runtime: streaming
           gateway: kafka
-        # TODO restore pulsar tests
-        # - qualifier: streaming-pulsar
-        #   os: ubuntu-latest
-        #   cluster: kind
-        #   registry: dockerhub
-        #   runtime: streaming
-        #   gateway: pulsar
+        - qualifier: streaming-pulsar
+          os: ubuntu-latest
+          cluster: kind
+          registry: dockerhub
+          runtime: streaming
+          gateway: pulsar
       fail-fast: false
     runs-on: ${{ matrix.config.os }}
     env:
