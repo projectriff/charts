@@ -12,6 +12,7 @@ Release YAML files for riff (includes cert-manager, Knative, KEDA, kpack, Contou
 - [kubectl](https://kubectl.docs.kubernetes.io) (1.14+)
 - [kapp](https://get-kapp.io) (0.14+)
 - [ytt](https://get-ytt.io) (0.14+)
+- [k8s-tag-resolver](https://github.com/projectriff/k8s-manifest-scanner/)
 
 ### Steps
 
