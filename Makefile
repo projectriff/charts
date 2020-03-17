@@ -34,6 +34,8 @@ repository: source/*.sh
 	./source/package.sh riff-knative-runtime ${VERSION}
 	
 	./source/package.sh riff-streaming-runtime ${VERSION}
+	
+	./source/package.sh riff-bindings ${VERSION}
 
 .PHONY: templates
 templates:
@@ -46,6 +48,7 @@ templates:
 	./source/update-template.sh riff-core-runtime
 	./source/update-template.sh riff-knative-runtime
 	./source/update-template.sh riff-streaming-runtime
+	./source/update-template.sh riff-bindings
 
 .PHONY: clean
 clean:

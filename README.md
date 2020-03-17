@@ -42,6 +42,12 @@ Release YAML files for riff (includes cert-manager, Knative, KEDA, kpack, Contou
    kapp deploy -n apps -a riff-build -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-build.yaml
    ```
 
+1. Optionally Install riff Bindings
+   
+   ```sh
+   kapp deploy -n apps -a riff-bindings -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-bindings.yaml
+   ```
+
 1. Install Contour (for core or knative runtimes)
    
    If your cluster supports LoadBalancer services (most managed clusters do, but local clusters typically do not):
@@ -125,6 +131,12 @@ Release YAML files for riff (includes cert-manager, Knative, KEDA, kpack, Contou
 
    ```sh
    kapp delete -n apps -a contour
+   ```
+
+1. Remove riff Bindings (if installed)
+
+   ```sh
+   kapp delete -n apps -a riff-bindings
    ```
 
 1. Remove riff Build
