@@ -34,6 +34,9 @@ if [ $RUNTIME = "streaming" ]; then
   fi
 fi
 
+echo "Uninstall riff Bindings"
+uninstall_app riff-bindings
+
 echo "Uninstall riff Build"
 uninstall_app riff-build
 uninstall_app riff-builders

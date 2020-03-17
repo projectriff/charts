@@ -45,6 +45,9 @@ install_app kpack
 install_app riff-builders
 install_app riff-build
 
+echo "Install riff Bindings"
+install_app riff-bindings
+
 if [ $RUNTIME = "core" ]; then
   echo "Install riff core runtime"
   install_app riff-core-runtime
