@@ -19,7 +19,7 @@ Release YAML files for riff (includes cert-manager, Knative, KEDA, kpack, Contou
 1. Define riff version
 
    ```sh
-   riff_version=0.5.0-snapshot
+   riff_version=0.6.0-snapshot
 
    kubectl create ns apps
    ```
