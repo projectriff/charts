@@ -42,12 +42,13 @@ jobs:
           registry: docker-daemon
           runtime: streaming
           gateway: kafka
-        - qualifier: streaming-pulsar
-          os: ubuntu-latest
-          cluster: kind
-          registry: docker-daemon
-          runtime: streaming
-          gateway: pulsar
+        # TODO restore, tracking in https://github.com/projectriff/system/issues/356
+        # - qualifier: streaming-pulsar
+        #   os: ubuntu-latest
+        #   cluster: kind
+        #   registry: docker-daemon
+        #   runtime: streaming
+        #   gateway: pulsar
       fail-fast: false
     runs-on: ${{ matrix.config.os }}
     steps:
