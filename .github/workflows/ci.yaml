@@ -25,11 +25,12 @@ jobs:
           cluster: kind
           registry: docker-daemon
           runtime: core
-        - qualifier: knative
-          os: ubuntu-latest
-          cluster: kind
-          registry: docker-daemon
-          runtime: knative
+        # TODO restore, tracking in https://github.com/projectriff/release/issues/170
+        # - qualifier: knative
+        #   os: ubuntu-latest
+        #   cluster: kind
+        #   registry: docker-daemon
+        #   runtime: knative
         - qualifier: streaming-inmemory
           os: ubuntu-latest
           cluster: kind
@@ -52,7 +53,7 @@ jobs:
       fail-fast: false
     runs-on: ${{ matrix.config.os }}
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Setup env
       run: |
         job=$(date +%s) # TODO use something that is assigned by CI to guarantee uniqueness
@@ -109,7 +110,7 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.repository, 'projectriff/')
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Setup env
       run: |
         echo "##[add-path]$(go env GOPATH)/bin"
@@ -141,11 +142,12 @@ jobs:
           cluster: kind
           registry: dockerhub
           runtime: core
-        - qualifier: knative
-          os: ubuntu-latest
-          cluster: gke
-          registry: gcr
-          runtime: knative
+        # TODO restore, tracking in https://github.com/projectriff/system/issues/356
+        # - qualifier: knative
+        #   os: ubuntu-latest
+        #   cluster: gke
+        #   registry: gcr
+        #   runtime: knative
         - qualifier: streaming-inmemory
           os: ubuntu-latest
           cluster: kind
@@ -172,7 +174,7 @@ jobs:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       GCLOUD_CLIENT_SECRET: ${{ secrets.GCLOUD_CLIENT_SECRET }}
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Setup env
       run: |
         job=$(date +%s) # TODO use something that is assigned by CI to guarantee uniqueness
@@ -227,7 +229,7 @@ jobs:
       )
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Fetch FATS
       run: ./.github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
     - name: Install tools
