@@ -13,4 +13,4 @@ helm init --client-only
 make clean package
 
 # upload releases
-gsutil cp -a public-read target/*.yaml gs://projectriff/release/snapshots/${slug}/
+gsutil cp target/*.yaml gs://projectriff/release/snapshots/${slug}/
