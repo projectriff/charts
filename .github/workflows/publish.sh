@@ -10,4 +10,4 @@ readonly git_timestamp=$(TZ=UTC git show --quiet --date='format-local:%Y%m%d%H%M
 readonly slug=${version}-${git_timestamp}-${git_sha:0:16}
 
 # publish releases
-gsutil -h 'Cache-Control: public, max-age=60' cp -a public-read gs://projectriff/release/snapshots/${slug}/*.yaml gs://projectriff/release/${version}/
+gsutil -h 'Cache-Control: public, max-age=60' cp gs://projectriff/release/snapshots/${slug}/*.yaml gs://projectriff/release/${version}/
