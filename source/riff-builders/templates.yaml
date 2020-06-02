@@ -1,2 +1,2 @@
-application-builder: https://storage.googleapis.com/projectriff/riff-buildtemplate/riff-application-clusterbuilder-0.6.6.yaml
-function-builder: https://storage.googleapis.com/projectriff/riff-buildtemplate/riff-function-clusterbuilder-0.6.6.yaml
+application-builder: https://storage.googleapis.com/projectriff/riff-buildtemplate/riff-application-clusterbuilder-0.6.8.yaml
+function-builder: https://storage.googleapis.com/projectriff/riff-buildtemplate/riff-function-clusterbuilder-0.6.8.yaml
